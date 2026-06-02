@@ -2,34 +2,39 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { 
-  FaMicrochip, FaLocationDot, FaPhone, FaEnvelope, FaWhatsapp,
-  FaLinkedinIn, FaFacebookF, FaTwitter, FaInstagram, FaArrowRight
+import { usePathname } from 'next/navigation'
+import {
+  FaMicrochip,
+  FaLocationDot,
+  FaPhone,
+  FaEnvelope,
+  FaWhatsapp,
+  FaFacebookF,
+  FaInstagram,
+  FaArrowRight,
 } from 'react-icons/fa6'
+import { resolveNavHref, serviceDropdownLinks } from '@/lib/nav-links'
 
 const quickLinks = [
   { name: 'Home', href: '#home' },
-  { name: 'About Us', href: '#about' },
-  { name: 'Our Services', href: '#services' },
-  { name: 'Portfolio', href: '#portfolio' },
-  { name: 'Contact Us', href: '#contact' },
-]
-
-const services = [
-  { name: 'PCB Design', href: '#services' },
-  { name: 'Card Repair', href: '#services' },
-  { name: 'Web Development', href: '#web-dev' },
-  { name: 'Crane SLI', href: '#services' },
+  { name: 'About Us', href: '/about' },
+  { name: 'Our Services', href: '/services' },
+  { name: 'Portfolio', href: '/portfolio' },
+  { name: 'Contact Us', href: '/contact' },
 ]
 
 const socialLinks = [
-  { icon: FaLinkedinIn, href: 'https://linkedin.com', label: 'LinkedIn' },
-  { icon: FaFacebookF, href: 'https://facebook.com', label: 'Facebook' },
-  { icon: FaTwitter, href: 'https://twitter.com', label: 'Twitter' },
+  // { icon: FaLinkedinIn, href: 'https://linkedin.com', label: 'LinkedIn' },
+  { icon: FaFacebookF, href: 'https://www.facebook.com/siliconpartshub/', label: 'Facebook' },
+  // { icon: FaTwitter, href: 'https://twitter.com', label: 'Twitter' },
   { icon: FaInstagram, href: 'https://instagram.com', label: 'Instagram' },
 ]
 
 export function Footer() {
+  const pathname = usePathname()
+  const isHome = pathname === '/'
+  const logoHref = isHome ? '#home' : '/'
+
   return (
     <footer className="bg-card border-t border-border">
       {/* Main Footer */}
@@ -42,7 +47,7 @@ export function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <Link href="#home" className="flex items-center gap-3 mb-6">
+            <Link href={logoHref} className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center">
                 <FaMicrochip className="w-5 h-5 text-primary" />
               </div>
@@ -52,8 +57,8 @@ export function Footer() {
               </div>
             </Link>
             <p className="text-muted-foreground mb-6 leading-relaxed">
-              Your trusted partner for industrial automation, PCB design, card repair, 
-              and custom software solutions. Delivering engineering excellence since 2014.
+              Your trusted partner for electronic engineering, R&D, crane safe load indicators, 
+              fire alarm systems, and industrial automation. Established 1975.
             </p>
             <div className="flex gap-3">
               {socialLinks.map((social) => {
@@ -87,7 +92,7 @@ export function Footer() {
               {quickLinks.map((link) => (
                 <li key={link.name}>
                   <Link
-                    href={link.href}
+                    href={resolveNavHref(link.href, isHome)}
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
                     {link.name}
@@ -106,7 +111,7 @@ export function Footer() {
           >
             <h3 className="text-lg font-bold text-foreground mb-6">Our Services</h3>
             <ul className="space-y-3">
-              {services.map((service) => (
+              {serviceDropdownLinks.map((service) => (
                 <li key={service.name}>
                   <Link
                     href={service.href}

@@ -66,6 +66,7 @@ export default function ContactPage() {
   const [file, setFile] = useState<File | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -80,9 +81,40 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    setIsSubmitting(false)
-    setIsSubmitted(true)
+    setSubmitError(null)
+
+    try {
+      const body = new FormData()
+      body.append('name', formData.name)
+      body.append('email', formData.email)
+      body.append('phone', formData.phone)
+      body.append('company', formData.company)
+      body.append('service', formData.service)
+      body.append('budget', formData.budget)
+      body.append('message', formData.message)
+      if (file) body.append('file', file)
+
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        body,
+      })
+
+      const data = (await res.json()) as { error?: string }
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to send message.')
+      }
+
+      setIsSubmitted(true)
+    } catch (err) {
+      setSubmitError(
+        err instanceof Error
+          ? err.message
+          : 'Something went wrong. Please email info@siliconpk.com directly.'
+      )
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   if (isSubmitted) {
@@ -242,6 +274,12 @@ export default function ContactPage() {
                     </label>
                   </div>
                 </div>
+
+                {submitError && (
+                  <p className="text-sm text-red-500 bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3" role="alert">
+                    {submitError}
+                  </p>
+                )}
 
                 <motion.button type="submit" disabled={isSubmitting} className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors glow-primary" whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }}>
                   {isSubmitting ? (

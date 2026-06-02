@@ -77,9 +77,16 @@ export function WhyChooseUs() {
             </span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto text-pretty">
-            Silicon International combines decades of industrial experience with cutting-edge technology 
-            to deliver solutions that transform your operations.
+            Since 1975, Silicon International has combined UK and Japan-trained electronic engineering expertise 
+            with R&D, reverse engineering, and industrial product development.
           </p>
+          <a
+            href="/about"
+            className="inline-flex items-center gap-2 mt-6 text-primary font-semibold hover:gap-3 transition-all"
+          >
+            Learn more about us
+            <span aria-hidden>→</span>
+          </a>
         </motion.div>
 
         {/* Values Grid */}
