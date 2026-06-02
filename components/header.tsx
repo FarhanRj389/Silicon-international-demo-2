@@ -22,7 +22,7 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const logoHref = isHome ? '#home' : '/'
+  const logoHref = '/'
 
   return (
     <motion.header

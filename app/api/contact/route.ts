@@ -23,6 +23,7 @@ export async function POST(request: Request) {
     const service = String(formData.get('service') || '').trim()
     const budget = String(formData.get('budget') || '').trim()
     const message = String(formData.get('message') || '').trim()
+    const source = String(formData.get('source') || 'contact-page').trim()
     const file = formData.get('file')
 
     if (!name || !email || !service || !message) {
@@ -47,6 +48,7 @@ export async function POST(request: Request) {
 
     const html = `
       <h2>New contact form submission — Silicon International</h2>
+      <p><strong>Source:</strong> ${escapeHtml(source)}</p>
       <p><strong>Name:</strong> ${escapeHtml(name)}</p>
       <p><strong>Email:</strong> ${escapeHtml(email)}</p>
       <p><strong>Phone:</strong> ${escapeHtml(phone || '—')}</p>
@@ -61,9 +63,10 @@ export async function POST(request: Request) {
       from: CONTACT_FROM,
       to: CONTACT_TO,
       replyTo: email,
-      subject: `[Website Contact] ${service} — ${name}`,
+      subject: `[${source}] ${service} — ${name}`,
       html,
       text: [
+        `Source: ${source}`,
         `Name: ${name}`,
         `Email: ${email}`,
         `Phone: ${phone || '—'}`,

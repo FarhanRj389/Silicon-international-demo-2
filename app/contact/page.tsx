@@ -1,6 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { clearFormCache, initSession, loadFormCache, saveFormCache } from '@/lib/client-storage'
+import { submitContactForm } from '@/lib/submit-contact'
+
+const CONTACT_CACHE_KEY = 'silicon_contact_form_v1'
+const SESSION_KEY = 'silicon_session_v1'
 import { motion } from 'framer-motion'
 import { PageWrapper } from '@/components/page-wrapper'
 import { PageBanner } from '@/components/page-banner'
@@ -68,6 +73,18 @@ export default function ContactPage() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
 
+  useEffect(() => {
+    initSession(SESSION_KEY)
+    const cached = loadFormCache<typeof formData>(CONTACT_CACHE_KEY)
+    if (cached) setFormData(cached)
+  }, [])
+
+  useEffect(() => {
+    if (!isSubmitted) {
+      saveFormCache(CONTACT_CACHE_KEY, formData)
+    }
+  }, [formData, isSubmitted])
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
@@ -84,27 +101,12 @@ export default function ContactPage() {
     setSubmitError(null)
 
     try {
-      const body = new FormData()
-      body.append('name', formData.name)
-      body.append('email', formData.email)
-      body.append('phone', formData.phone)
-      body.append('company', formData.company)
-      body.append('service', formData.service)
-      body.append('budget', formData.budget)
-      body.append('message', formData.message)
-      if (file) body.append('file', file)
-
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        body,
+      await submitContactForm({
+        ...formData,
+        file,
+        source: 'contact-page',
       })
-
-      const data = (await res.json()) as { error?: string }
-
-      if (!res.ok) {
-        throw new Error(data.error || 'Failed to send message.')
-      }
-
+      clearFormCache(CONTACT_CACHE_KEY)
       setIsSubmitted(true)
     } catch (err) {
       setSubmitError(

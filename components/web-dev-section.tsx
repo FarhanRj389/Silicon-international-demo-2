@@ -119,7 +119,7 @@ export function WebDevSection() {
                   </div>
 
                   <motion.a
-                    href="#contact"
+                    href="/contact"
                     className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors"
                     whileHover={{ x: 5 }}
                   >

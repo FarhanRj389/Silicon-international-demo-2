@@ -16,7 +16,7 @@ import {
 import { resolveNavHref, serviceDropdownLinks } from '@/lib/nav-links'
 
 const quickLinks = [
-  { name: 'Home', href: '#home' },
+  { name: 'Home', href: '/' },
   { name: 'About Us', href: '/about' },
   { name: 'Our Services', href: '/services' },
   { name: 'Portfolio', href: '/portfolio' },
@@ -33,7 +33,7 @@ const socialLinks = [
 export function Footer() {
   const pathname = usePathname()
   const isHome = pathname === '/'
-  const logoHref = isHome ? '#home' : '/'
+  const logoHref = '/'
 
   return (
     <footer className="bg-card border-t border-border">

@@ -6,7 +6,7 @@ export const serviceDropdownLinks = [
 ] as const
 
 export const mainNavLinks = [
-  { name: 'Home', href: '#home' },
+  { name: 'Home', href: '/' },
   { name: 'About Us', href: '/about' },
   {
     name: 'Our Services',
@@ -17,10 +17,35 @@ export const mainNavLinks = [
   { name: 'Contact Us', href: '/contact' },
 ] as const
 
-/** Hash links on home; full paths on other pages */
-export function resolveNavHref(href: string, isHome: boolean) {
+/** Home sections (only used on homepage for in-page scroll) */
+export const homeSectionLinks = {
+  services: '#services',
+  portfolio: '#portfolio',
+  contact: '#contact',
+  about: '#about',
+} as const
+
+/**
+ * Clean URLs: never stack hashes like /#home#home
+ * - "/" for home
+ * - "/#section" from other pages to home sections
+ * - "#section" on home for same-page scroll (use with scroll, not duplicate Link)
+ */
+export function resolveNavHref(href: string, isHome: boolean): string {
+  if (href === '/' || href === '#home' || href === '') return '/'
+
   if (href.startsWith('#')) {
     return isHome ? href : `/${href}`
   }
+
   return href
+}
+
+export function scrollToSection(hash: string) {
+  const id = hash.replace('#', '')
+  const el = document.getElementById(id)
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    window.history.replaceState(null, '', `/#${id}`)
+  }
 }

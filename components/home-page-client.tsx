@@ -16,6 +16,7 @@ import { TrustpilotSection } from '@/components/trustpilot-section'
 import { ClientReviewsSection } from '@/components/client-reviews-section'
 import { LeadForm } from '@/components/lead-form'
 import { Footer } from '@/components/footer'
+import { HashUrlFix } from '@/components/hash-url-fix'
 
 export function HomePageClient() {
   const [loading, setLoading] = useState(true)
@@ -40,6 +41,7 @@ export function HomePageClient() {
       <AnimatePresence>
         {!loading && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+            <HashUrlFix />
             <Header />
             <main>
               <Hero />
