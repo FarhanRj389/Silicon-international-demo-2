@@ -4,31 +4,26 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { FaArrowRight } from 'react-icons/fa6'
 import { HeroContactForm } from '@/components/hero-contact-form'
+import { DeferredVideo } from '@/components/deferred-video'
+
+const HERO_VIDEO =
+  'https://videos.pexels.com/video-files/3129671/3129671-hd_1920_1080_30fps.mp4'
 
 export function Hero() {
   return (
-    <section id="home" className="relative min-h-screen flex items-center overflow-hidden">
+    <section id="home" className="relative min-h-[100dvh] min-h-screen flex items-center overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover opacity-30"
+        <DeferredVideo
+          src={HERO_VIDEO}
           poster="/images/hero-poster.jpg"
-        >
-          <source
-            src="https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4"
-            type="video/mp4"
-          />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
+          overlayClassName="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background"
+        />
       </div>
 
       <div className="absolute inset-0 circuit-grid opacity-40 z-[1]" />
 
-      <div className="relative z-10 container mx-auto px-4 md:px-6 pt-28 pb-16 w-full">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div className="relative z-10 container-site pt-[calc(5.5rem+env(safe-area-inset-top))] sm:pt-28 pb-12 sm:pb-16 w-full">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
           {/* Left — content */}
           <div className="text-left">
             <motion.div
@@ -47,7 +42,7 @@ export function Hero() {
             </motion.div>
 
             <motion.h1
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight text-balance"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight text-balance"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}

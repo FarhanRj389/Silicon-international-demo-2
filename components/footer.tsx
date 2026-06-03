@@ -27,7 +27,7 @@ const socialLinks = [
   // { icon: FaLinkedinIn, href: 'https://linkedin.com', label: 'LinkedIn' },
   { icon: FaFacebookF, href: 'https://www.facebook.com/siliconpartshub/', label: 'Facebook' },
   // { icon: FaTwitter, href: 'https://twitter.com', label: 'Twitter' },
-  { icon: FaInstagram, href: 'https://instagram.com', label: 'Instagram' },
+  { icon: FaInstagram, href: 'https://www.instagram.com/siliconpartshub/', label: 'Instagram' },
 ]
 
 export function Footer() {

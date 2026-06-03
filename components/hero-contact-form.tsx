@@ -5,6 +5,11 @@ import { motion } from 'framer-motion'
 import { FaPaperPlane, FaCircleCheck } from 'react-icons/fa6'
 import { clearFormCache, initSession, loadFormCache, saveFormCache } from '@/lib/client-storage'
 import { submitContactForm } from '@/lib/submit-contact'
+import {
+  clearContactProduct,
+  getContactProduct,
+  mapProductToServiceValue,
+} from '@/lib/contact-form-utils'
 
 const CACHE_KEY = 'silicon_hero_form_v1'
 const SESSION_KEY = 'silicon_session_v1'
@@ -13,6 +18,11 @@ const serviceOptions = [
   'PCB Design',
   'Industrial Card Repair',
   'Crane SLI Solutions',
+  'Crane SLI — SLI-200',
+  'Crane SLI — SLI-300',
+  'Crane SLI — SLI-400',
+  'Crane SLI — SLI-600',
+  'Crane SLI — Charkhi (Winch)',
   'Web Development',
   'General Inquiry',
 ]
@@ -43,6 +53,38 @@ export function HeroContactForm() {
     initSession(SESSION_KEY)
     const cached = loadFormCache<HeroFormData>(CACHE_KEY)
     if (cached) setForm(cached)
+
+    const applyProduct = (product: string) => {
+      const mapped = mapProductToServiceValue(product)
+      let service = product
+      if (mapped === 'sli') service = product.includes('SLI') ? product : 'Crane SLI Solutions'
+      else if (mapped === 'web') service = 'Web Development'
+      else if (mapped === 'pcb') service = 'PCB Design'
+      else if (mapped === 'repair') service = 'Industrial Card Repair'
+      setForm((prev) => ({
+        ...prev,
+        service,
+        message: prev.message
+          ? prev.message
+          : `Interested in: ${product}\n\nPlease share specifications.`,
+      }))
+      clearContactProduct()
+    }
+
+    const stored = getContactProduct()
+    if (stored) applyProduct(stored)
+
+    const onProduct = (e: Event) => {
+      const detail = (e as CustomEvent<string>).detail
+      if (detail) applyProduct(detail)
+    }
+    window.addEventListener('silicon:contact-product', onProduct)
+
+    const params = new URLSearchParams(window.location.search)
+    const product = params.get('product')
+    if (product) applyProduct(product)
+
+    return () => window.removeEventListener('silicon:contact-product', onProduct)
   }, [])
 
   useEffect(() => {

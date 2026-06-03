@@ -1,14 +1,59 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { FaPaperPlane, FaUpload, FaCircleCheck } from 'react-icons/fa6'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import {
+  clearContactProduct,
+  getContactProduct,
+  mapProductToServiceValue,
+} from '@/lib/contact-form-utils'
+
+const serviceOptions = [
+  { value: 'pcb', label: 'PCB Design & Manufacturing' },
+  { value: 'repair', label: 'Industrial Card Repair' },
+  { value: 'web', label: 'Web & App Development' },
+  { value: 'sli', label: 'Crane SLI Solutions' },
+  { value: 'consultation', label: 'Onsite Consultation' },
+]
+
+function applyProductToForm(
+  product: string,
+  setService: (v: string) => void,
+  setProjectDetails: (v: string | ((p: string) => string)) => void
+) {
+  const mapped = mapProductToServiceValue(product)
+  if (mapped) setService(mapped)
+  setProjectDetails((prev) =>
+    prev.includes(product) ? prev : `Interested in: ${product}\n\n${prev}`.trim()
+  )
+  clearContactProduct()
+}
 
 export function LeadForm() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [fileName, setFileName] = useState<string | null>(null)
+  const [service, setService] = useState('')
+  const [projectDetails, setProjectDetails] = useState('')
+
+  useEffect(() => {
+    const stored = getContactProduct()
+    if (stored) applyProductToForm(stored, setService, setProjectDetails)
+
+    const onProduct = (e: Event) => {
+      const detail = (e as CustomEvent<string>).detail
+      if (detail) applyProductToForm(detail, setService, setProjectDetails)
+    }
+    window.addEventListener('silicon:contact-product', onProduct)
+
+    const params = new URLSearchParams(window.location.search)
+    const product = params.get('product')
+    if (product) applyProductToForm(product, setService, setProjectDetails)
+
+    return () => window.removeEventListener('silicon:contact-product', onProduct)
+  }, [])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -129,13 +174,17 @@ export function LeadForm() {
 
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-2">Service Required</label>
-                      <select className="w-full px-4 py-2.5 rounded-lg bg-secondary/50 border border-border text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary">
+                      <select
+                        value={service}
+                        onChange={(e) => setService(e.target.value)}
+                        className="w-full px-4 py-2.5 rounded-lg bg-secondary/50 border border-border text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                      >
                         <option value="">Select a service</option>
-                        <option value="pcb">PCB Design & Manufacturing</option>
-                        <option value="repair">Industrial Card Repair</option>
-                        <option value="web">Web & App Development</option>
-                        <option value="sli">Crane SLI Solutions</option>
-                        <option value="consultation">Onsite Consultation</option>
+                        {serviceOptions.map((o) => (
+                          <option key={o.value} value={o.value}>
+                            {o.label}
+                          </option>
+                        ))}
                       </select>
                     </div>
 
@@ -161,6 +210,8 @@ export function LeadForm() {
                       <label className="block text-sm font-medium text-foreground mb-2">Project Details</label>
                       <textarea
                         rows={4}
+                        value={projectDetails}
+                        onChange={(e) => setProjectDetails(e.target.value)}
                         placeholder="Tell us about your project requirements..."
                         className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary resize-none"
                       />

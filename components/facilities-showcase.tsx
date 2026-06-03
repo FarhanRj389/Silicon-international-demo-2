@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { FaBuilding, FaMicroscope, FaIndustry, FaWarehouse } from 'react-icons/fa6'
+import { LazyImage } from '@/components/lazy-image'
 
 const facilities = [
   {
@@ -32,8 +33,8 @@ const facilities = [
 
 export function FacilitiesShowcase() {
   return (
-    <section className="py-24 bg-secondary/20">
-      <div className="container mx-auto px-4 md:px-6">
+    <section className="section-padding bg-secondary/20">
+      <div className="container-site">
         {/* Section Header */}
         <motion.div
           className="text-center mb-16"
@@ -71,10 +72,12 @@ export function FacilitiesShowcase() {
               >
                 {/* Image */}
                 <div className="relative h-56 overflow-hidden">
-                  <img
+                  <LazyImage
                     src={facility.image}
                     alt={facility.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    width={600}
+                    wrapperClassName="h-full w-full transition-transform duration-500 group-hover:scale-110"
+                    className="object-cover"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
                   

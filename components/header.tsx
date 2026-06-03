@@ -33,10 +33,18 @@ export function Header() {
       animate={{ y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
     >
-      <nav className="container mx-auto px-4 md:px-6 bg-white py-4 rounded-xl rounded-b-4xl">
+      <nav className="container mx-auto px-4 md:px-6 bg-card/95 backdrop-blur border border-border py-4 rounded-xl rounded-b-4xl shadow-sm">
         <div className="flex items-center justify-between">
           <Link href={logoHref} className="flex items-center gap-3 group">
-            <img src="/silicon_int_1.jpeg" alt="Silicon International" className="md:w-96 h-auto w-72" />
+            <img
+              src="/silicon_int_1.jpeg"
+              alt="Silicon International"
+              width={384}
+              height={80}
+              loading="eager"
+              decoding="async"
+              className="h-auto w-[min(72vw,18rem)] sm:w-64 md:w-80 lg:w-96 max-h-16 sm:max-h-20 object-contain object-left"
+            />
           </Link>
 
           <div className="hidden lg:flex items-center gap-1">

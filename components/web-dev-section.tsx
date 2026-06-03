@@ -5,6 +5,7 @@ import {
   FaCartShopping, FaBriefcase, FaGraduationCap, FaRobot, 
   FaMobileScreenButton, FaArrowRight, FaMicrochip 
 } from 'react-icons/fa6'
+import { LazyImage } from '@/components/lazy-image'
 
 const webServices = [
   {
@@ -46,8 +47,8 @@ const webServices = [
 
 export function WebDevSection() {
   return (
-    <section id="web-dev" className="py-24">
-      <div className="container mx-auto px-4 md:px-6">
+    <section id="web-dev" className="section-padding">
+      <div className="container-site">
         {/* Section Header */}
         <motion.div
           className="text-center mb-16"
@@ -84,13 +85,13 @@ export function WebDevSection() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 {/* Image */}
-                <div className="w-full lg:w-2/5 h-64 lg:h-80 rounded-xl overflow-hidden">
-                  <motion.img
+                <div className="w-full lg:w-2/5 h-52 sm:h-64 lg:h-80 rounded-xl overflow-hidden group">
+                  <LazyImage
                     src={service.image}
                     alt={service.title}
-                    className="w-full h-full object-cover"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.5 }}
+                    width={640}
+                    wrapperClassName="h-full w-full group-hover:scale-[1.02] transition-transform duration-500"
+                    className="object-cover"
                   />
                 </div>
 
@@ -100,7 +101,7 @@ export function WebDevSection() {
                     <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center">
                       <Icon className="w-6 h-6 text-primary" />
                     </div>
-                    <h3 className="text-2xl font-bold text-foreground">{service.title}</h3>
+                    <h3 className="text-xl sm:text-2xl font-bold text-foreground">{service.title}</h3>
                   </div>
                   
                   <p className="text-muted-foreground text-lg mb-6 leading-relaxed">

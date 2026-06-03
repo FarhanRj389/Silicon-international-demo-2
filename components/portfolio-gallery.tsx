@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { LazyImage } from '@/components/lazy-image'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FaExpand, FaPlay, FaXmark, FaArrowRight } from 'react-icons/fa6'
@@ -62,14 +63,16 @@ export function PortfolioGallery({ showViewAllLink = false, compact = false }: P
               whileHover={{ y: -4 }}
             >
               <div className="relative h-52 overflow-hidden">
-                <img
+                <LazyImage
                   src={
                     project.mediaType === 'video'
                       ? project.thumbnailUrl || project.mediaUrl
                       : project.mediaUrl
                   }
                   alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  width={480}
+                  wrapperClassName="h-full w-full transition-transform duration-500 group-hover:scale-105"
+                  className="object-cover"
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-card via-transparent to-transparent" />
                 {project.mediaType === 'video' && (

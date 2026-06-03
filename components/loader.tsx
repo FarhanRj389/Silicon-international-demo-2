@@ -50,16 +50,16 @@ export function Loader({ onComplete }: { onComplete: () => void }) {
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) return 100;
-        return Math.min(prev + Math.random() * 15 + 5, 100);
+        return Math.min(prev + Math.random() * 18 + 8, 100);
       });
-    }, 200);
+    }, 160);
     return () => clearInterval(progressInterval);
   }, []);
 
   useEffect(() => {
     if (progress >= 100 && !isExiting) {
       setTimeout(() => setIsExiting(true), 300);
-      setTimeout(() => onComplete(), 1100);
+      setTimeout(() => onComplete(), 700);
     }
   }, [progress, isExiting, onComplete]);
 
