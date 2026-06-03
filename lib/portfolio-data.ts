@@ -49,7 +49,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 3,
-    title: 'B2B E-Commerce — Industrial Parts',
+    title: 'B2B E-Commerce Industrial Parts',
     categoryId: 'web-dev',
     categoryLabel: 'Web & Apps',
     mediaType: 'image',

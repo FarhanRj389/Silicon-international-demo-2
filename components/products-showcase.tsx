@@ -53,12 +53,12 @@ export function ProductsShowcase() {
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mt-4 mb-6 text-balance">
             Crane SLI, Card Services &{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
-              Industrial Products
+            Web & App Solutions
             </span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto text-pretty">
-            SLI-200 to SLI-600, Charkhi systems, card repair & manufacturing, and website
-            projects — same detailed layout as our web development showcase.
+          <p className="text-muted-foreground text-lg max-w-4xl mx-auto text-pretty">
+          Delivering next-generation SLI automation (SLI-200 to SLI-600), expert industrial 
+  card manufacturing, and bespoke web & app solutions tailored for business growth.
           </p>
         </motion.div>
 
@@ -85,35 +85,34 @@ export function ProductsShowcase() {
             here.
           </p>
         ) : (
-          <div className="space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {products.map((product, index) => {
               const Icon = getProductIcon(product)
-              const isEven = index % 2 === 0
               const badge = getCategoryBadge(product)
 
               return (
                 <motion.div
                   key={product.id}
-                  className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-8 items-center p-6 lg:p-8 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all`}
+                  className="flex flex-col gap-6 p-6 rounded-2xl bg-card border border-border hover:border-primary/30 transition-all"
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.05 }}
                 >
-                  <div className="w-full lg:w-2/5 h-52 sm:h-64 lg:h-80 rounded-xl overflow-hidden relative group">
+                  <div className="w-full h-52 sm:h-64 rounded-xl overflow-hidden relative group">
                     <LazyImage
                       src={product.image}
                       alt={product.name}
                       width={640}
-                      wrapperClassName="h-full w-full group-hover:scale-[1.02] transition-transform duration-500"
-                      className="object-cover"
+                      wrapperClassName="h-full w-full group-hover:scale-[1.05] transition-transform duration-500"
+                      className="object-fill "
                     />
                     <span className="absolute top-3 left-3 z-10 px-3 py-1 rounded-full bg-primary/90 text-primary-foreground text-xs font-semibold">
                       {badge}
                     </span>
                   </div>
 
-                  <div className="w-full lg:w-3/5">
+                  <div className="flex flex-col flex-1">
                     <div className="flex items-center gap-4 mb-4">
                       <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center shrink-0">
                         <Icon className="w-6 h-6 text-primary" />
@@ -139,7 +138,7 @@ export function ProductsShowcase() {
                     <motion.button
                       type="button"
                       onClick={() => scrollToContactWithProduct(product.formLabel)}
-                      className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors"
+                      className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors mt-auto"
                       whileHover={{ x: 5 }}
                     >
                       Get a Quote
@@ -167,7 +166,7 @@ export function ProductsShowcase() {
               <div>
                 <h3 className="text-xl font-bold text-foreground">Need a Custom SLI or Card Solution?</h3>
                 <p className="text-muted-foreground">
-                  Tell us your crane capacity, load cell type, or board model — we respond within 24
+                  Tell us your Crane capacity, lenght & angle Seneor, load cell type,  or board model  we respond within 24
                   hours.
                 </p>
               </div>

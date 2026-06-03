@@ -18,11 +18,11 @@ const serviceOptions = [
   'PCB Design',
   'Industrial Card Repair',
   'Crane SLI Solutions',
-  'Crane SLI — SLI-200',
-  'Crane SLI — SLI-300',
-  'Crane SLI — SLI-400',
-  'Crane SLI — SLI-600',
-  'Crane SLI — Charkhi (Winch)',
+  // 'Crane SLI — SLI-200',
+  // 'Crane SLI — SLI-300',
+  // 'Crane SLI — SLI-400',
+  // 'Crane SLI — SLI-600',
+  // 'Crane SLI — Charkhi (Winch)',
   'Web Development',
   'General Inquiry',
 ]
@@ -157,7 +157,7 @@ export function HeroContactForm() {
     >
       <h3 className="text-lg font-bold text-foreground mb-1">Quick Inquiry</h3>
       <p className="text-sm text-muted-foreground mb-5">
-        Get a quote — saved on this device for 1 week.
+        Get a quote saved on this device for 1 week.
       </p>
 
       <div className="space-y-4">

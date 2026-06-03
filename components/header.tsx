@@ -26,24 +26,24 @@ export function Header() {
 
   return (
     <motion.header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-4 lg:px-11 ${
         scrolled ? 'glass py-3' : 'bg-transparent py-5'
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
     >
-      <nav className="container mx-auto px-4 md:px-6 bg-card/95 backdrop-blur border border-border py-4 rounded-xl rounded-b-4xl shadow-sm">
+      <nav className="container mx-auto px-4 md:px-6  bg-card/95 backdrop-blur border border-border py-4 rounded-xl rounded-b-4xl shadow-sm">
         <div className="flex items-center justify-between">
           <Link href={logoHref} className="flex items-center gap-3 group">
             <img
-              src="/silicon_int_1.jpeg"
+              src="/bg-r-s.png"
               alt="Silicon International"
               width={384}
               height={80}
               loading="eager"
               decoding="async"
-              className="h-auto w-[min(72vw,18rem)] sm:w-64 md:w-80 lg:w-96 max-h-16 sm:max-h-20 object-contain object-left"
+              className="h-auto w-[min(72vw,15rem)] sm:w-64 md:w-80 lg:w-96 max-h-16 sm:max-h-20 object-contain object-left"
             />
           </Link>
 

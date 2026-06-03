@@ -7,7 +7,7 @@ import { FaDiagramProject, FaIndustry, FaCalendarDays, FaUsers } from 'react-ico
 const stats = [
   { icon: FaDiagramProject, value: 500, suffix: '+', label: 'Projects Completed' },
   { icon: FaIndustry, value: 50, suffix: '+', label: 'Industrial Clients' },
-  { icon: FaCalendarDays, value: 10, suffix: '+', label: 'Years Experience' },
+  { icon: FaCalendarDays, value: 50, suffix: '+', label: 'Years Experience' },
   { icon: FaUsers, value: 25, suffix: '+', label: 'Expert Engineers' },
 ]
 

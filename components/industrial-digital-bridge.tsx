@@ -28,7 +28,7 @@ const pillars = [
   {
     icon: FaCode,
     title: 'Software Layer',
-    desc: 'SCADA, dashboards, B2B portals & mobile apps that talk to your plant.',
+    desc: 'PLC, dashboards, B2B portals & mobile apps that talk to your plant.',
     accent: 'from-primary/15 to-accent/10',
   },
   {
@@ -80,7 +80,7 @@ export function IndustrialDigitalBridge() {
                 </span>
               </h2>
               <p className="text-muted-foreground text-base sm:text-lg mb-6 max-w-xl mx-auto lg:mx-0 text-pretty">
-                You&apos;ve seen our SLI and card solutions — next, explore how we ship modern web
+                You&apos;ve seen our SLI and card solutions next, explore how we ship modern web
                 apps, e-commerce, and automation that connect directly to your operations.
               </p>
 
@@ -144,11 +144,11 @@ export function IndustrialDigitalBridge() {
 
           <div className="mt-8 pt-6 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
             <p className="text-sm text-muted-foreground max-w-md">
-              <span className="text-primary font-semibold">50+ years</span> in electronics — now with
+              <span className="text-primary font-semibold">50+ years</span> in electronics now with
               full-stack digital delivery for industrial brands.
             </p>
             <div className="flex flex-wrap justify-center gap-2 text-xs font-medium text-muted-foreground">
-              {['Next.js', 'PLC / SCADA', 'SLI Systems', 'React Native', 'PCB Fab'].map((tag) => (
+              {['PLC', 'SLI Systems', 'PCB Design & Fab', 'Next.js',  'React Native', 'Shopify', 'Wordpress'].map((tag) => (
                 <span
                   key={tag}
                   className="px-3 py-1.5 rounded-full bg-background/60 border border-border"

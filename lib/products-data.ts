@@ -12,10 +12,9 @@ export type ProductItem = {
   highlights: string[]
 }
 
-const craneImage =
-  'https://images.pexels.com/photos/1267338/pexels-photo-1267338.jpeg'
-const cardImage =
-  'https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg'
+const crane200 = '/images/Sli-200.webp'
+const crane300s = '/images/sli-300s.webp'
+const crane500 = '/images/sli-500.webp'
 
 export const productCategories: { id: ProductCategoryId; label: string }[] = [
   { id: 'all', label: 'All Products' },
@@ -31,49 +30,39 @@ const craneSliProducts: ProductItem[] = [
     categoryId: 'crane-sli',
     description:
       'Compact Safe Load Indicator for small cranes and hoists with real-time load monitoring.',
-    image: craneImage,
+    image: crane200,
     formLabel: 'Crane SLI — SLI-200',
     highlights: ['2–20 ton capacity', 'LED display', 'Overload alarm'],
   },
   {
-    id: 'sli-300',
-    name: 'SLI-300',
+    id: 'sli-300s',
+    name: 'SLI-300S',
     categoryId: 'crane-sli',
     description:
       'Mid-range SLI system for industrial cranes with anti-two-block and data logging.',
-    image: craneImage,
-    formLabel: 'Crane SLI — SLI-300',
+    image: crane300s,
+    formLabel: 'Crane SLI — SLI-300S',
     highlights: ['20–50 ton', 'RS485 output', 'Calibration support'],
   },
+  // {
+  //   id: 'sli-400',
+  //   name: 'SLI-400',
+  //   categoryId: 'crane-sli',
+  //   description:
+  //     'Advanced SLI for port and warehouse cranes with multi-sensor integration.',
+  //   image: crane200,
+  //   formLabel: 'Crane SLI — SLI-400',
+  //   highlights: ['50–100 ton', 'HMI ready', 'Anti-collision ready'],
+  // },
   {
-    id: 'sli-400',
-    name: 'SLI-400',
-    categoryId: 'crane-sli',
-    description:
-      'Advanced SLI for port and warehouse cranes with multi-sensor integration.',
-    image: craneImage,
-    formLabel: 'Crane SLI — SLI-400',
-    highlights: ['50–100 ton', 'HMI ready', 'Anti-collision ready'],
-  },
-  {
-    id: 'sli-600',
-    name: 'SLI-600',
+    id: 'sli-500',
+    name: 'SLI-500',
     categoryId: 'crane-sli',
     description:
       'Heavy-duty SLI for ship-to-shore and large gantry cranes with full safety compliance.',
-    image: craneImage,
-    formLabel: 'Crane SLI — SLI-600',
+    image: crane500,
+    formLabel: 'Crane SLI — SLI-500',
     highlights: ['100+ ton', 'PLC integration', 'On-site commissioning'],
-  },
-  {
-    id: 'charkhi',
-    name: 'Charkhi (Winch SLI)',
-    categoryId: 'crane-sli',
-    description:
-      'Dedicated winch/charkhi load monitoring with drum speed and tension safety limits.',
-    image: craneImage,
-    formLabel: 'Crane SLI — Charkhi (Winch)',
-    highlights: ['Winch monitoring', 'Tension limits', 'Custom mounting'],
   },
 ]
 
@@ -84,7 +73,7 @@ const cardServiceProducts: ProductItem[] = [
     categoryId: 'card-services',
     description:
       'VFD, PLC, servo drive, and control board repair with fast turnaround diagnostics.',
-    image: cardImage,
+    image: '/images/card-repair.webp',
     formLabel: 'Industrial Card Repair',
     highlights: ['All major brands', '48hr turnaround', 'Warranty available'],
   },
@@ -95,7 +84,7 @@ const cardServiceProducts: ProductItem[] = [
     description:
       'Custom PCB and control card design from schematic to production-ready Gerber files.',
     image:
-      'https://images.pexels.com/photos/163100/circuit-circuit-board-resistor-computer-163100.jpeg',
+      '/images/pcb-designig.webp',
     formLabel: 'PCB / Card Designing',
     highlights: ['Multi-layer PCB', 'DFM review', 'Prototype support'],
   },
@@ -106,7 +95,7 @@ const cardServiceProducts: ProductItem[] = [
     description:
       'Small to medium batch PCB fabrication and assembly for industrial automation panels.',
     image:
-      'https://images.pexels.com/photos/159275/machine-technology-computer-board-159275.jpeg',
+      '/images/pcb-assambly.webp',
     formLabel: 'PCB / Card Manufacturing',
     highlights: ['SMD assembly', 'Testing & QA', 'Industrial grade'],
   },

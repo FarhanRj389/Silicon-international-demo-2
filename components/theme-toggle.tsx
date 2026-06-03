@@ -13,7 +13,7 @@ export function ThemeToggle() {
   if (!mounted) {
     return (
       <div
-        className="fixed right-4 md:right-6 top-[calc(6.5rem+env(safe-area-inset-top))] z-[60] w-11 h-11 rounded-full border border-border bg-card/90"
+        className="fixed md:top-[calc(7.5rem+env(safe-area-inset-top))] right-4 md:right-6 top-[calc(6.5rem+env(safe-area-inset-top))] z-[60] w-11 h-11 rounded-full border border-border bg-card/90"
         aria-hidden
       />
     )
@@ -25,7 +25,7 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
-      className="fixed right-4 md:right-6 top-[calc(6.5rem+env(safe-area-inset-top))] z-[60] w-11 h-11 rounded-full border border-border bg-card/95 backdrop-blur shadow-lg flex items-center justify-center text-foreground hover:border-primary/50 hover:bg-primary/10 transition-colors"
+      className="fixed right-4 md:right-6 md:top-[calc(7.5rem+env(safe-area-inset-top))] top-[calc(6.5rem+env(safe-area-inset-top))] z-[60] w-11 h-11 rounded-full border border-border bg-card/95 backdrop-blur shadow-lg flex items-center justify-center text-foreground hover:border-primary/50 hover:bg-primary/10 transition-colors"
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       title={isDark ? 'Light mode' : 'Dark mode'}
     >

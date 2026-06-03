@@ -23,7 +23,7 @@ export function Hero() {
       <div className="absolute inset-0 circuit-grid opacity-40 z-[1]" />
 
       <div className="relative z-10 container-site pt-[calc(5.5rem+env(safe-area-inset-top))] sm:pt-28 pb-12 sm:pb-16 w-full">
-        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center md:px-6 md:py-12 py-14">
           {/* Left — content */}
           <div className="text-left">
             <motion.div
@@ -61,7 +61,8 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.4 }}
             >
               Delivering cutting-edge PCB Design, Card Repair, Web Development, and Crane SLI Solutions
-              with unmatched precision and reliability — established 1975.
+              with unmatched precision and reliability 
+              <span className="text-primary font-bold">&nbsp;Established 1975.</span>
             </motion.p>
 
             <motion.div
@@ -71,10 +72,10 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.6 }}
             >
               <Link
-                href="/portfolio"
+                href="/services"
                 className="group flex items-center justify-center gap-3 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-all glow-primary"
               >
-                Explore Our Portfolio
+                Explore Our Services
                 <FaArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <a
@@ -99,8 +100,8 @@ export function Hero() {
                 { value: '50+', label: 'Industrial Clients' },
               ].map((stat) => (
                 <div key={stat.label}>
-                  <p className="text-2xl md:text-3xl font-bold text-primary mb-1">{stat.value}</p>
-                  <p className="text-xs md:text-sm text-muted-foreground">{stat.label}</p>
+                  <p className="text-2xl md:text-3xl font-bold text-primary mb-1 text-center">{stat.value}</p>
+                  <p className="text-xs md:text-sm text-muted-foreground text-center">{stat.label}</p>
                 </div>
               ))}
             </motion.div>
