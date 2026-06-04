@@ -14,7 +14,7 @@ type PageBannerProps = {
 
 export function PageBanner({ title, subtitle, breadcrumbs }: PageBannerProps) {
   return (
-    <section className="bg-gray-950 py-16 relative overflow-hidden">
+    <section className="bg-gray-950 py-16 mt-5 relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.15)_0%,transparent_70%)]" />
       <div className="relative container mx-auto px-4 md:px-6">
         {breadcrumbs && breadcrumbs.length > 0 && (

@@ -21,13 +21,13 @@ const contactInfo = [
   {
     icon: FaLocationDot,
     title: 'Visit Our Office',
-    details: ['Office #123, Tech Park', 'Johar Town, Lahore', 'Pakistan'],
+    details: ['Office # 3 First Floor', 'Sarmad Center, Saddar','Karachi-74400, Pakistan.'],
   },
   {
     icon: FaPhone,
     title: 'Call Us',
-    details: ['+92 344 227 9244', '+92 42 3521 0000'],
-    link: 'tel:+923442279244'
+    details: ['+92 370 917 2334'],
+    link: 'tel:+923709172334'
   },
   {
     icon: FaEnvelope,
@@ -38,15 +38,15 @@ const contactInfo = [
   {
     icon: FaClock,
     title: 'Business Hours',
-    details: ['Monday - Friday: 9AM - 6PM', 'Saturday: 10AM - 4PM'],
+    details: ['Monday - Friday: 10AM - 9PM', 'Saturday: 11AM - 9PM'],
   },
 ]
 
 const socialLinks = [
-  { icon: FaWhatsapp, href: 'https://wa.me/923442279244', label: 'WhatsApp', color: 'hover:bg-[#25D366]' },
-  { icon: FaLinkedinIn, href: 'https://linkedin.com', label: 'LinkedIn', color: 'hover:bg-[#0077B5]' },
+  { icon: FaWhatsapp, href: 'https://wa.me/923709172334', label: 'WhatsApp', color: 'hover:bg-[#25D366]' },
+  // { icon: FaLinkedinIn, href: 'https://linkedin.com', label: 'LinkedIn', color: 'hover:bg-[#0077B5]' },
   { icon: FaFacebookF, href: 'https://facebook.com', label: 'Facebook', color: 'hover:bg-[#1877F2]' },
-  { icon: FaTwitter, href: 'https://twitter.com', label: 'Twitter', color: 'hover:bg-[#1DA1F2]' },
+  // { icon: FaTwitter, href: 'https://twitter.com', label: 'Twitter', color: 'hover:bg-[#1DA1F2]' },
   { icon: FaInstagram, href: 'https://instagram.com', label: 'Instagram', color: 'hover:bg-[#E4405F]' },
 ]
 
@@ -66,7 +66,7 @@ export default function ContactPage() {
     phone: '',
     company: '',
     service: '',
-    budget: '',
+    // budget: '',
     message: '',
   })
   const [file, setFile] = useState<File | null>(null)
@@ -79,7 +79,7 @@ export default function ContactPage() {
     phone: '',
     company: '',
     service: '',
-    budget: '',
+    // budget: '',
     message: '',
   }
 
@@ -115,7 +115,7 @@ export default function ContactPage() {
         phone: formData.phone,
         company: formData.company,
         service: formData.service,
-        budget: formData.budget,
+        // budget: formData.budget,
         message: formData.message,
         file,
         source: 'contact-page',
@@ -226,7 +226,7 @@ export default function ContactPage() {
                       ))}
                     </select>
                   </div>
-                  <div>
+                  {/* <div>
                     <label htmlFor="budget" className="block text-sm font-medium text-foreground mb-2">Budget Range</label>
                     <select id="budget" name="budget" value={formData.budget} onChange={handleChange} className="w-full px-4 py-3 bg-secondary/30 border border-border rounded-xl text-foreground focus:border-primary outline-none transition-colors">
                       <option value="">Select budget</option>
@@ -236,7 +236,7 @@ export default function ContactPage() {
                       <option value="10000-50000">$10,000 - $50,000</option>
                       <option value="over-50000">Over $50,000</option>
                     </select>
-                  </div>
+                  </div> */}
                 </div>
 
                 <div>
@@ -279,13 +279,13 @@ export default function ContactPage() {
 
             <motion.div className="space-y-8" initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }}>
               <div className="rounded-2xl overflow-hidden border border-border h-[400px]">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27223.372!2d74.26862!3d31.4697!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3919040c98c3a3ed%3A0x9d12c93e05ff44e6!2sJohar%20Town%2C%20Lahore%2C%20Punjab%2C%20Pakistan!5e0!3m2!1sen!2s!4v1234567890" width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Silicon International Location" />
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3620.135518187447!2d67.02468879999999!3d24.8592207!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33fd5863bab51%3A0x61d5784b788af717!2sSilicon%20International!5e0!3m2!1sen!2s!4v1780585228338!5m2!1sen!2s" width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Silicon International Location" />
               </div>
 
               <div className="p-6 bg-card border border-border rounded-2xl">
                 <h3 className="text-xl font-bold text-foreground mb-4">Quick Contact</h3>
                 <p className="text-muted-foreground mb-6">Need immediate assistance? Reach out via WhatsApp.</p>
-                <a href="https://wa.me/923442279244" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-[#25D366] text-white rounded-xl font-semibold hover:bg-[#25D366]/90 transition-colors">
+                <a href="https://wa.me/923709172334" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-[#25D366] text-white rounded-xl font-semibold hover:bg-[#25D366]/90 transition-colors">
                   <FaWhatsapp className="w-6 h-6" />
                   Chat on WhatsApp
                 </a>

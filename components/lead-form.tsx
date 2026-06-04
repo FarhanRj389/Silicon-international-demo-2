@@ -72,7 +72,7 @@ export function LeadForm() {
       <div className="absolute inset-0 circuit-grid opacity-20" />
       
       <div className="container mx-auto px-4 md:px-6 relative z-10">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
             <motion.div
@@ -89,7 +89,7 @@ export function LeadForm() {
                 </span>
               </h2>
               <p className="text-muted-foreground text-lg mb-8 text-pretty">
-                Whether you need PCB design, industrial repair services, or custom software solutions — 
+                Whether you need PCB design, industrial repair services, or custom software solutions 
                 our team is ready to help. Upload your requirements or schedule an onsite consultation.
               </p>
 

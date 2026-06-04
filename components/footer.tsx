@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import Image from 'next/image'
 import {
   FaMicrochip,
   FaLocationDot,
@@ -48,13 +49,15 @@ export function Footer() {
             transition={{ duration: 0.6 }}
           >
             <Link href={logoHref} className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center">
-                <FaMicrochip className="w-5 h-5 text-primary" />
-              </div>
-              <div>
-                <p className="font-bold text-foreground">Silicon International</p>
-                <p className="text-xs text-muted-foreground">Industrial Excellence</p>
-              </div>
+             <Image
+              src="/bg-r-s.png"
+              alt="Silicon International"
+              width={240}
+              height={37}
+              priority
+              sizes="(max-width: 640px) 60vw, 240px"
+              className="h-auto w-[min(72vw,15rem)] sm:w-64 md:w-80 lg:w-96 max-h-16 sm:max-h-20 object-contain object-left"
+            />
             </Link>
             <p className="text-muted-foreground mb-6 leading-relaxed">
               Your trusted partner for electronic engineering, R&D, crane safe load indicators, 

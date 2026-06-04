@@ -148,7 +148,7 @@ export function IndustrialDigitalBridge() {
               full-stack digital delivery for industrial brands.
             </p>
             <div className="flex flex-wrap justify-center gap-2 text-xs font-medium text-muted-foreground">
-              {['PLC', 'SLI Systems', 'PCB Design & Fab', 'Next.js',  'React Native', 'Shopify', 'Wordpress'].map((tag) => (
+              {['PLC', 'SLI Systems', 'PCB Design & Fab', 'Next.js',  'React Native', 'Shopify', 'Wordpress', 'N8N Automations'].map((tag) => (
                 <span
                   key={tag}
                   className="px-3 py-1.5 rounded-full bg-background/60 border border-border"

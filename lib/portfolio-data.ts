@@ -53,7 +53,7 @@ export const portfolioItems: PortfolioItem[] = [
     categoryId: 'web-dev',
     categoryLabel: 'Web & Apps',
     mediaType: 'image',
-    mediaUrl: 'https://images.pexels.com/photos/5632402/pexels-photo-5632402.jpeg',
+    mediaUrl: '/images/b2b-soulton.webp',
     description: 'Full-featured B2B store with inventory and payment integrations.',
     scope: 'UI/UX, Next.js, Backend, Payments',
     metrics: '300% Sales Growth',
@@ -98,14 +98,14 @@ export const portfolioItems: PortfolioItem[] = [
     categoryId: 'web-dev',
     categoryLabel: 'Web & Apps',
     mediaType: 'video',
-    mediaUrl: 'https://videos.pexels.com/video-files/3129957/3129957-sd_640_360_30fps.mp4',
-    thumbnailUrl: 'https://images.pexels.com/photos/3184357/pexels-photo-3184357.jpeg',
+    mediaUrl: '/images/port.webp',
+    // thumbnailUrl: 'https://images.pexels.com/photos/3184357/pexels-photo-3184357.jpeg',
     description: 'Premium corporate site with SEO and lead capture.',
     scope: 'Design, Development, SEO, Analytics',
     metrics: '150% More Leads',
   },
   {
-    id: 8,
+    id: 8,  
     title: 'Warehouse Crane Automation',
     categoryId: 'crane-sli',
     categoryLabel: 'Crane SLI',
@@ -116,4 +116,5 @@ export const portfolioItems: PortfolioItem[] = [
     scope: 'PLC, HMI, Commissioning',
     metrics: '40% Efficiency Gain',
   },
+  
 ]
