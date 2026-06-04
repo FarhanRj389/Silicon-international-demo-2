@@ -21,7 +21,7 @@ export function OrganizationJsonLd() {
         '@type': 'Organization',
         name: SITE_NAME,
         url: SITE_URL,
-        logo: `${SITE_URL}/silicon_int_1.jpeg`,
+        logo: `${SITE_URL}/sologen.webp`,
         foundingDate: '1975',
         founder: {
           '@type': 'Person',

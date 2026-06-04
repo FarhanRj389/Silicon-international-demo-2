@@ -9,6 +9,16 @@ const inter = Inter({
   variable: '--font-inter',
 })
 
+export const metadata: Metadata = {
+  icons: {
+    icon: [
+      { url: '/sologen.webp', type: 'image/webp' },
+    ],
+    shortcut: '/sologen.webp',
+    apple: '/sologen.webp',
+  },
+}
+
 export const viewport: Viewport = {
   themeColor: '#0f172a',
   width: 'device-width',
