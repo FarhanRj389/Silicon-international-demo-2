@@ -1,8 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useId, useState } from 'react'
 import { motion } from 'framer-motion'
-import { FaPaperPlane, FaCircleCheck } from 'react-icons/fa6'
+import { FaPaperPlane } from 'react-icons/fa6'
+import { toast } from 'react-toastify'
 import { clearFormCache, initSession, loadFormCache, saveFormCache } from '@/lib/client-storage'
 import { submitContactForm } from '@/lib/submit-contact'
 import {
@@ -18,11 +19,6 @@ const serviceOptions = [
   'PCB Design',
   'Industrial Card Repair',
   'Crane SLI Solutions',
-  // 'Crane SLI — SLI-200',
-  // 'Crane SLI — SLI-300',
-  // 'Crane SLI — SLI-400',
-  // 'Crane SLI — SLI-600',
-  // 'Crane SLI — Charkhi (Winch)',
   'Web Development',
   'General Inquiry',
 ]
@@ -44,9 +40,9 @@ const emptyForm: HeroFormData = {
 }
 
 export function HeroContactForm() {
+  const formId = useId()
   const [form, setForm] = useState<HeroFormData>(emptyForm)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
@@ -88,10 +84,8 @@ export function HeroContactForm() {
   }, [])
 
   useEffect(() => {
-    if (!isSubmitted) {
-      saveFormCache(CACHE_KEY, form)
-    }
-  }, [form, isSubmitted])
+    saveFormCache(CACHE_KEY, form)
+  }, [form])
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -106,45 +100,26 @@ export function HeroContactForm() {
 
     try {
       await submitContactForm({
-        ...form,
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
         service: form.service || 'General Inquiry',
+        message: form.message,
         source: 'hero-banner',
       })
-      setIsSubmitted(true)
       clearFormCache(CACHE_KEY)
       setForm(emptyForm)
+      toast.success('Thank you! Silicon International will respond within 24 hours.')
     } catch (err) {
-      setError(
+      const message =
         err instanceof Error
           ? err.message
           : 'Could not send. Email info@siliconpk.com directly.'
-      )
+      setError(message)
+      toast.error(message)
     } finally {
       setIsSubmitting(false)
     }
-  }
-
-  if (isSubmitted) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.96 }}
-        animate={{ opacity: 1, scale: 1 }}
-        className="p-8 rounded-2xl bg-card/95 backdrop-blur border border-border text-center"
-      >
-        <FaCircleCheck className="w-12 h-12 text-green-500 mx-auto mb-4" />
-        <h3 className="text-xl font-bold text-foreground mb-2">Message Sent!</h3>
-        <p className="text-muted-foreground text-sm mb-4">
-          Our team will respond within 24 hours.
-        </p>
-        <button
-          type="button"
-          onClick={() => setIsSubmitted(false)}
-          className="text-sm text-primary font-semibold hover:underline"
-        >
-          Send another message
-        </button>
-      </motion.div>
-    )
   }
 
   return (
@@ -154,62 +129,99 @@ export function HeroContactForm() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.5 }}
       className="p-6 md:p-8 rounded-2xl bg-card/95 backdrop-blur border border-border shadow-xl"
+      aria-labelledby={`${formId}-title`}
     >
-      <h3 className="text-lg font-bold text-foreground mb-1">Quick Inquiry</h3>
+      <h3 id={`${formId}-title`} className="text-lg font-bold text-foreground mb-1">
+        Quick Inquiry
+      </h3>
       <p className="text-sm text-muted-foreground mb-5">
         Get a quote saved on this device for 1 week.
       </p>
 
       <div className="space-y-4">
-        <input
-          type="text"
-          name="name"
-          required
-          value={form.name}
-          onChange={handleChange}
-          placeholder="Full Name *"
-          className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl text-foreground text-sm focus:border-primary outline-none"
-        />
-        <input
-          type="email"
-          name="email"
-          required
-          value={form.email}
-          onChange={handleChange}
-          placeholder="Email *"
-          className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl text-foreground text-sm focus:border-primary outline-none"
-        />
-        <input
-          type="tel"
-          name="phone"
-          value={form.phone}
-          onChange={handleChange}
-          placeholder="Phone"
-          className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl text-foreground text-sm focus:border-primary outline-none"
-        />
-        <select
-          name="service"
-          required
-          value={form.service}
-          onChange={handleChange}
-          className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl text-foreground text-sm focus:border-primary outline-none"
-        >
-          <option value="">Service Required *</option>
-          {serviceOptions.map((s) => (
-            <option key={s} value={s}>
-              {s}
-            </option>
-          ))}
-        </select>
-        <textarea
-          name="message"
-          required
-          rows={3}
-          value={form.message}
-          onChange={handleChange}
-          placeholder="Your project details *"
-          className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl text-foreground text-sm focus:border-primary outline-none resize-none"
-        />
+        <div>
+          <label htmlFor={`${formId}-name`} className="sr-only">
+            Full Name
+          </label>
+          <input
+            type="text"
+            id={`${formId}-name`}
+            name="name"
+            required
+            autoComplete="name"
+            value={form.name}
+            onChange={handleChange}
+            placeholder="Full Name *"
+            className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl text-foreground text-sm focus:border-primary outline-none"
+          />
+        </div>
+        <div>
+          <label htmlFor={`${formId}-email`} className="sr-only">
+            Email
+          </label>
+          <input
+            type="email"
+            id={`${formId}-email`}
+            name="email"
+            required
+            autoComplete="email"
+            value={form.email}
+            onChange={handleChange}
+            placeholder="Email *"
+            className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl text-foreground text-sm focus:border-primary outline-none"
+          />
+        </div>
+        <div>
+          <label htmlFor={`${formId}-phone`} className="sr-only">
+            Phone
+          </label>
+          <input
+            type="tel"
+            id={`${formId}-phone`}
+            name="phone"
+            autoComplete="tel"
+            value={form.phone}
+            onChange={handleChange}
+            placeholder="Phone"
+            className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl text-foreground text-sm focus:border-primary outline-none"
+          />
+        </div>
+        <div>
+          <label htmlFor={`${formId}-service`} className="sr-only">
+            Service Required
+          </label>
+          <select
+            id={`${formId}-service`}
+            name="service"
+            required
+            value={form.service}
+            onChange={handleChange}
+            aria-label="Service Required"
+            className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl text-foreground text-sm focus:border-primary outline-none"
+          >
+            <option value="">Service Required *</option>
+            {serviceOptions.map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label htmlFor={`${formId}-message`} className="sr-only">
+            Project details
+          </label>
+          <textarea
+            id={`${formId}-message`}
+            name="message"
+            required
+            rows={3}
+            value={form.message}
+            onChange={handleChange}
+            placeholder="Your project details *"
+            className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl text-foreground text-sm focus:border-primary outline-none resize-none"
+          />
+        </div>
       </div>
 
       {error && (
@@ -221,7 +233,7 @@ export function HeroContactForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="mt-5 w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-primary text-primary-foreground rounded-xl font-semibold text-sm hover:bg-primary/90 disabled:opacity-50 transition-colors"
+        className="mt-5 w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-primary text-primary-foreground rounded-xl font-semibold text-sm hover:bg-primary/90 disabled:opacity-50 transition-colors min-h-[44px]"
       >
         {isSubmitting ? (
           <>

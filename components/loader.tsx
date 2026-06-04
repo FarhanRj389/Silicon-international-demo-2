@@ -50,9 +50,9 @@ export function Loader({ onComplete }: { onComplete: () => void }) {
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) return 100;
-        return Math.min(prev + Math.random() * 18 + 8, 100);
+        return Math.min(prev + Math.random() * 22 + 12, 100);
       });
-    }, 160);
+    }, 120);
     return () => clearInterval(progressInterval);
   }, []);
 

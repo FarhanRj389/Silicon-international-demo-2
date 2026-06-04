@@ -5,6 +5,52 @@ export const runtime = 'nodejs'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 
+const BUDGET_LABELS: Record<string, string> = {
+  'under-1000': 'Under $1,000',
+  '1000-5000': '$1,000 - $5,000',
+  '5000-10000': '$5,000 - $10,000',
+  '10000-50000': '$10,000 - $50,000',
+  'over-50000': 'Over $50,000',
+}
+
+const SOURCE_LABELS: Record<string, string> = {
+  'hero-banner': 'Home Page — Quick Inquiry',
+  'contact-page': 'Contact Page',
+  website: 'Website',
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
+function formatBudget(value: string) {
+  return BUDGET_LABELS[value] || value
+}
+
+function buildEmailRows(source: string, data: Record<string, string>): Array<[string, string]> {
+  const rows: Array<[string, string]> = [
+    ['Name', data.name],
+    ['Email', data.email],
+  ]
+
+  if (data.phone) rows.push(['Phone', data.phone])
+
+  if (source === 'contact-page') {
+    if (data.company) rows.push(['Company', data.company])
+    rows.push(['Service', data.service])
+    if (data.budget) rows.push(['Budget', formatBudget(data.budget)])
+  } else {
+    rows.push(['Service', data.service])
+  }
+
+  rows.push(['Project Details', data.message])
+  return rows
+}
+
 export async function POST(request: Request) {
   try {
     if (!isMailConfigured()) {
@@ -23,7 +69,7 @@ export async function POST(request: Request) {
     const service = String(formData.get('service') || '').trim()
     const budget = String(formData.get('budget') || '').trim()
     const message = String(formData.get('message') || '').trim()
-    const source = String(formData.get('source') || 'contact-page').trim()
+    const source = String(formData.get('source') || 'website').trim()
     const file = formData.get('file')
 
     if (!name || !email || !service || !message) {
@@ -36,7 +82,7 @@ export async function POST(request: Request) {
     }
 
     const attachments: { filename: string; content: Buffer }[] = []
-    if (file instanceof File && file.size > 0) {
+    if (source === 'contact-page' && file instanceof File && file.size > 0) {
       if (file.size > MAX_FILE_SIZE) {
         return NextResponse.json({ error: 'Attachment must be under 5MB.' }, { status: 400 })
       }
@@ -44,38 +90,42 @@ export async function POST(request: Request) {
       attachments.push({ filename: file.name, content: buffer })
     }
 
+    const fieldData = {
+      name,
+      email,
+      phone,
+      company: source === 'contact-page' ? company : '',
+      service,
+      budget: source === 'contact-page' ? budget : '',
+      message,
+    }
+
+    const rows = buildEmailRows(source, fieldData)
+    const sourceLabel = SOURCE_LABELS[source] || 'Silicon International Website'
     const transporter = getMailTransporter()
 
+    const htmlRows = rows
+      .map(
+        ([label, value]) =>
+          `<p><strong>${escapeHtml(label)}:</strong> ${escapeHtml(value).replace(/\n/g, '<br/>')}</p>`
+      )
+      .join('')
+
     const html = `
-      <h2>New contact form submission — Silicon International</h2>
-      <p><strong>Source:</strong> ${escapeHtml(source)}</p>
-      <p><strong>Name:</strong> ${escapeHtml(name)}</p>
-      <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-      <p><strong>Phone:</strong> ${escapeHtml(phone || '—')}</p>
-      <p><strong>Company:</strong> ${escapeHtml(company || '—')}</p>
-      <p><strong>Service:</strong> ${escapeHtml(service)}</p>
-      <p><strong>Budget:</strong> ${escapeHtml(budget || '—')}</p>
-      <p><strong>Message:</strong></p>
-      <p>${escapeHtml(message).replace(/\n/g, '<br/>')}</p>
+      <h2>New inquiry — Silicon International</h2>
+      <p><strong>Form:</strong> ${escapeHtml(sourceLabel)}</p>
+      ${htmlRows}
     `
+
+    const text = [`Form: ${sourceLabel}`, ...rows.map(([label, value]) => `${label}: ${value}`)].join('\n')
 
     await transporter.sendMail({
       from: CONTACT_FROM,
       to: CONTACT_TO,
       replyTo: email,
-      subject: `[${source}] ${service} — ${name}`,
+      subject: `[Silicon International] ${service} — ${name}`,
       html,
-      text: [
-        `Source: ${source}`,
-        `Name: ${name}`,
-        `Email: ${email}`,
-        `Phone: ${phone || '—'}`,
-        `Company: ${company || '—'}`,
-        `Service: ${service}`,
-        `Budget: ${budget || '—'}`,
-        '',
-        message,
-      ].join('\n'),
+      text,
       attachments,
     })
 
@@ -87,12 +137,4 @@ export async function POST(request: Request) {
       { status: 500 }
     )
   }
-}
-
-function escapeHtml(value: string) {
-  return value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
 }

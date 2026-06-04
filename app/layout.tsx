@@ -1,7 +1,7 @@
 import type { Viewport } from 'next'
 import { Inter } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
+import { ToastProvider } from '@/components/toast-provider'
 import './globals.css'
 
 const inter = Inter({
@@ -25,8 +25,8 @@ export default function RootLayout({
       <body className={`${inter.variable} font-sans antialiased`} suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} storageKey="silicon-theme">
           {children}
+          <ToastProvider />
         </ThemeProvider>
-        {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
   )

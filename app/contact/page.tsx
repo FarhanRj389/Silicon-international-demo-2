@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { toast } from 'react-toastify'
 import { clearFormCache, initSession, loadFormCache, saveFormCache } from '@/lib/client-storage'
 import { submitContactForm } from '@/lib/submit-contact'
 
@@ -13,7 +14,7 @@ import { TrustedPartners } from '@/components/trusted-partners'
 import { 
   FaLocationDot, FaPhone, FaEnvelope, FaWhatsapp, FaClock,
   FaLinkedinIn, FaFacebookF, FaTwitter, FaInstagram,
-  FaPaperPlane, FaCircleCheck, FaUpload
+  FaPaperPlane, FaUpload
 } from 'react-icons/fa6'
 
 const contactInfo = [
@@ -70,8 +71,17 @@ export default function ContactPage() {
   })
   const [file, setFile] = useState<File | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+
+  const emptyForm = {
+    name: '',
+    email: '',
+    phone: '',
+    company: '',
+    service: '',
+    budget: '',
+    message: '',
+  }
 
   useEffect(() => {
     initSession(SESSION_KEY)
@@ -80,10 +90,8 @@ export default function ContactPage() {
   }, [])
 
   useEffect(() => {
-    if (!isSubmitted) {
-      saveFormCache(CONTACT_CACHE_KEY, formData)
-    }
-  }, [formData, isSubmitted])
+    saveFormCache(CONTACT_CACHE_KEY, formData)
+  }, [formData])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -102,59 +110,30 @@ export default function ContactPage() {
 
     try {
       await submitContactForm({
-        ...formData,
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        company: formData.company,
+        service: formData.service,
+        budget: formData.budget,
+        message: formData.message,
         file,
         source: 'contact-page',
       })
       clearFormCache(CONTACT_CACHE_KEY)
-      setIsSubmitted(true)
+      setFormData(emptyForm)
+      setFile(null)
+      toast.success('Thank you! Silicon International will respond within 24 hours.')
     } catch (err) {
-      setSubmitError(
+      const message =
         err instanceof Error
           ? err.message
           : 'Something went wrong. Please email info@siliconpk.com directly.'
-      )
+      setSubmitError(message)
+      toast.error(message)
     } finally {
       setIsSubmitting(false)
     }
-  }
-
-  if (isSubmitted) {
-    return (
-      <PageWrapper>
-        <PageBanner 
-          title="Contact Us"
-          subtitle="Get in touch with our team"
-          breadcrumbs={[{ name: 'Contact Us', href: '/contact' }]}
-        />
-        <section className="py-24 bg-background">
-          <div className="container mx-auto px-4 md:px-6">
-            <motion.div
-              className="max-w-xl mx-auto text-center"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-            >
-              <div className="w-20 h-20 rounded-full bg-green-500/10 flex items-center justify-center mx-auto mb-6">
-                <FaCircleCheck className="w-10 h-10 text-green-500" />
-              </div>
-              <h2 className="text-3xl font-bold text-foreground mb-4">Thank You!</h2>
-              <p className="text-muted-foreground mb-8">
-                Your message has been sent. We will respond within 24 hours.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="/" className="px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium">
-                  Back to Home
-                </a>
-                <a href="https://wa.me/923442279244" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 px-6 py-3 bg-[#25D366] text-white rounded-lg">
-                  <FaWhatsapp className="w-5 h-5" />
-                  Chat on WhatsApp
-                </a>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-      </PageWrapper>
-    )
   }
 
   return (
@@ -163,7 +142,6 @@ export default function ContactPage() {
         title="Contact Us"
         subtitle="Get in touch with our team for inquiries, quotes, or support"
         breadcrumbs={[{ name: 'Contact Us', href: '/contact' }]}
-        videoSrc="https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4"
       />
 
       <section className="py-16 bg-card">

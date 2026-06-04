@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FaStar, FaPlay, FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
 import { clientReviews, type ClientReview } from '@/lib/client-reviews-data'
+import { optimizeImageUrl, optimizeVideoUrl } from '@/lib/image-utils'
 
 function StarRating({ rating }: { rating: number }) {
   return (
@@ -23,8 +24,12 @@ function ReviewCard({ review }: { review: ClientReview }) {
     <div className="h-full flex flex-col p-6 md:p-8 rounded-2xl bg-card border border-border">
       <div className="flex items-start gap-4 mb-5">
         <img
-          src={review.avatar}
+          src={optimizeImageUrl(review.avatar, 112)}
           alt={review.name}
+          width={56}
+          height={56}
+          loading="lazy"
+          decoding="async"
           className="w-14 h-14 rounded-full object-cover border-2 border-primary/30 shrink-0"
         />
         <div>
@@ -43,13 +48,24 @@ function ReviewCard({ review }: { review: ClientReview }) {
 
       {review.mediaType === 'image' && review.mediaUrl && (
         <div className="rounded-xl overflow-hidden border border-border aspect-video">
-          <img src={review.mediaUrl} alt={`Project by ${review.name}`} className="w-full h-full object-cover" />
+          <img
+            src={optimizeImageUrl(review.mediaUrl, 640)}
+            alt={`Project by ${review.name}`}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover"
+          />
         </div>
       )}
 
       {review.mediaType === 'video' && review.mediaUrl && (
         <div className="relative rounded-xl overflow-hidden border border-border aspect-video bg-black">
-          <video src={review.mediaUrl} controls className="w-full h-full object-cover" />
+          <video
+            src={optimizeVideoUrl(review.mediaUrl)}
+            controls
+            preload="none"
+            className="w-full h-full object-cover"
+          />
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0">
             <FaPlay className="w-10 h-10 text-white" />
           </div>

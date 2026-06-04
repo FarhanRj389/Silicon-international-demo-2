@@ -105,7 +105,7 @@ export function ProductsShowcase() {
                       alt={product.name}
                       width={640}
                       wrapperClassName="h-full w-full group-hover:scale-[1.05] transition-transform duration-500"
-                      className="object-fill "
+                      className="object-cover"
                     />
                     <span className="absolute top-3 left-3 z-10 px-3 py-1 rounded-full bg-primary/90 text-primary-foreground text-xs font-semibold">
                       {badge}

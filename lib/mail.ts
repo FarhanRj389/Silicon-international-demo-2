@@ -27,4 +27,4 @@ export function getMailTransporter() {
 
 export const CONTACT_TO = process.env.CONTACT_TO || 'info@siliconpk.com'
 export const CONTACT_FROM =
-  process.env.CONTACT_FROM || `"Silicon International Website" <${smtpUser || 'noreply@siliconpk.com'}>`
+  process.env.CONTACT_FROM || `"Silicon International" <${smtpUser || 'noreply@siliconpk.com'}>`

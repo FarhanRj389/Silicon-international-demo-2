@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import dynamic from 'next/dynamic'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Loader } from '@/components/loader'
+import { shouldShowInitialLoader, markInitialLoaderComplete } from '@/lib/initial-loader'
 import { Header } from '@/components/header'
 import { Hero } from '@/components/hero'
 import { ClientTicker } from '@/components/client-ticker'
@@ -39,7 +40,12 @@ const ClientReviewsSection = dynamic(
 )
 
 export function HomePageClient() {
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(shouldShowInitialLoader)
+
+  const handleLoaderComplete = useCallback(() => {
+    markInitialLoaderComplete()
+    setLoading(false)
+  }, [])
 
   useEffect(() => {
     if (loading) {
@@ -55,33 +61,34 @@ export function HomePageClient() {
   return (
     <>
       <AnimatePresence>
-        {loading && <Loader onComplete={() => setLoading(false)} />}
+        {loading && <Loader onComplete={handleLoaderComplete} />}
       </AnimatePresence>
 
-      <AnimatePresence>
-        {!loading && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-            <HashUrlFix />
-            <SiteChrome />
-            <Header />
-            <main className="overflow-x-hidden">
-              <Hero />
-              <ClientTicker />
-              <WhyChooseUs />
-              <ServicesGrid />
-              <StatsCounter />
-              <ProductsShowcase />
-              <IndustrialDigitalBridge />
-              <WebDevSection />
-              <Portfolio />
-              <TrustpilotSection />
-              <ClientReviewsSection />
-              <LeadForm />
-            </main>
-            <Footer />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <motion.div
+        initial={{ opacity: loading ? 0 : 1 }}
+        animate={{ opacity: loading ? 0 : 1 }}
+        transition={{ duration: 0.5 }}
+        aria-hidden={loading}
+      >
+        <HashUrlFix />
+        <SiteChrome />
+        <Header />
+        <main className="overflow-x-hidden">
+          <Hero />
+          <ClientTicker />
+          <WhyChooseUs />
+          <ServicesGrid />
+          <StatsCounter />
+          <ProductsShowcase />
+          <IndustrialDigitalBridge />
+          <WebDevSection />
+          <Portfolio />
+          <TrustpilotSection />
+          <ClientReviewsSection />
+          <LeadForm />
+        </main>
+        <Footer />
+      </motion.div>
 
       {!loading && (
         <motion.a

@@ -5,12 +5,11 @@ import { cn } from '@/lib/utils'
 
 type DeferredVideoProps = {
   src: string
-  poster?: string
   className?: string
   overlayClassName?: string
 }
 
-export function DeferredVideo({ src, poster, className, overlayClassName }: DeferredVideoProps) {
+export function DeferredVideo({ src, className, overlayClassName }: DeferredVideoProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [shouldLoad, setShouldLoad] = useState(false)
 
@@ -29,7 +28,7 @@ export function DeferredVideo({ src, poster, className, overlayClassName }: Defe
     )
     observer.observe(el)
 
-    const fallback = window.setTimeout(() => setShouldLoad(true), 1200)
+    const fallback = window.setTimeout(() => setShouldLoad(true), 2500)
 
     return () => {
       observer.disconnect()
@@ -39,24 +38,22 @@ export function DeferredVideo({ src, poster, className, overlayClassName }: Defe
 
   return (
     <div ref={containerRef} className={cn('absolute inset-0', className)}>
-      {poster && (
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-30"
-          style={{ backgroundImage: `url(${poster})` }}
-          aria-hidden
-        />
-      )}
+      <div
+        className="absolute inset-0 bg-gradient-to-br from-background via-secondary/40 to-background opacity-40"
+        aria-hidden
+      />
       {shouldLoad ? (
         <video
           autoPlay
           loop
           muted
           playsInline
-          preload="metadata"
-          poster={poster}
+          preload="none"
           className="h-full w-full object-cover opacity-30"
+          aria-hidden
         >
           <source src={src} type="video/mp4" />
+          <track kind="captions" srcLang="en" label="Background video" default />
         </video>
       ) : null}
       {overlayClassName ? <div className={overlayClassName} /> : null}

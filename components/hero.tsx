@@ -5,9 +5,11 @@ import Link from 'next/link'
 import { FaArrowRight } from 'react-icons/fa6'
 import { HeroContactForm } from '@/components/hero-contact-form'
 import { DeferredVideo } from '@/components/deferred-video'
+import { optimizeVideoUrl } from '@/lib/image-utils'
 
-const HERO_VIDEO =
+const HERO_VIDEO = optimizeVideoUrl(
   'https://videos.pexels.com/video-files/3129671/3129671-hd_1920_1080_30fps.mp4'
+)
 
 export function Hero() {
   return (
@@ -15,7 +17,6 @@ export function Hero() {
       <div className="absolute inset-0 z-0">
         <DeferredVideo
           src={HERO_VIDEO}
-          poster="/images/hero-poster.jpg"
           overlayClassName="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background"
         />
       </div>
