@@ -3,6 +3,7 @@ export const serviceDropdownLinks = [
   { name: 'Card Repair', href: '/services/card-repair' },
   { name: 'Crane SLI', href: '/services/crane-sli' },
   { name: 'Web & Apps', href: '/services/web-dev' },
+  { name: 'Student Training', href: '/services/student-training' },
 ] as const
 
 export const mainNavLinks = [

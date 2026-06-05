@@ -4,10 +4,11 @@ import {
   FaDesktop,
   FaGear,
   FaMicrochip,
+  FaGraduationCap,
 } from 'react-icons/fa6'
 
 export type ServiceItem = {
-  id: 'pcb' | 'card-repair' | 'crane-sli' | 'web-dev'
+  id: 'pcb' | 'card-repair' | 'crane-sli' | 'web-dev' | 'student-training'
   icon: IconType
   label: string
   title: string
@@ -16,7 +17,7 @@ export type ServiceItem = {
   image: string
   features: string[]
   industries: string[]
-  ctaType: 'store' | 'consult'
+  ctaType: 'store' | 'consult' | 'enroll'
   ctaText: string
   ctaHref: string
   buyHref?: string
@@ -151,6 +152,37 @@ export const serviceTabs: ServiceItem[] = [
     ctaType: 'consult',
     ctaText: 'Discuss Your Project',
     ctaHref: '/contact',
+  },
+  {
+    id: 'student-training',
+    icon: FaGraduationCap,
+    label: 'Student Training',
+    title: 'Professional Skills Training for Students',
+    tagline: 'Learn. Build. Launch Your Career.',
+    description:
+      'Silicon International offers hands-on professional training programs for students and fresh graduates. Our industry-expert instructors guide you through practical, real-world projects in PCB Design, Card Repairing, Web & App Development, and more. Enroll today and start your journey toward a successful tech career.',
+    image:
+      'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg',
+    features: [
+      'PCB Design — Learn Altium, KiCad & schematic capture',
+      'Card Repairing — Diagnose & fix industrial electronics',
+      'Web & App Development — Full-stack modern tech stack',
+      'Hands-on practical projects with real hardware',
+      'Industry-certified instructors with 10+ years experience',
+      'Small batch classes for personalized attention',
+      'Flexible scheduling — choose your preferred days & time',
+      'Certificate of completion issued by Silicon International',
+    ],
+    industries: [
+      'Fresh Graduates',
+      'Engineering Students',
+      'Career Switchers',
+      'Hobbyists',
+      'Professionals Upskilling',
+    ],
+    ctaType: 'enroll',
+    ctaText: 'Enroll Now',
+    ctaHref: '/contact?service=Student+Training',
   },
 ]
 
