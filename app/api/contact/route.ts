@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { appendSubmissionToExcel } from '@/lib/excel-submissions'
 import { generateStudentSerialId } from '@/lib/generate-student-id'
-import { CONTACT_FROM, CONTACT_TO, getMailTransporter, isMailConfigured } from '@/lib/mail'
+import { CONTACT_FROM, CONTACT_TO, sendMail, isMailConfigured } from '@/lib/mail'
 import { verifyRecaptcha } from '@/lib/recaptcha'
 import {
   buildStudentCourseLabel,
@@ -238,7 +238,7 @@ export async function POST(request: Request) {
 
     const attachments: { filename: string; content: Buffer }[] = []
 
-    if (source === 'contact-page' && file instanceof File && file.size > 0) {
+    if ((source === 'contact-page' || source === 'lead-form') && file instanceof File && file.size > 0) {
       if (file.size > MAX_FILE_SIZE) {
         return NextResponse.json({ error: 'Attachment must be under 5MB.' }, { status: 400 })
       }
@@ -272,7 +272,6 @@ export async function POST(request: Request) {
 
     const rows = buildEmailRows(source, fieldData, isStudent)
     const sourceLabel = SOURCE_LABELS[source] || 'Silicon International Website'
-    const transporter = getMailTransporter()
 
     const htmlRows = rows
       .map(
@@ -289,7 +288,7 @@ export async function POST(request: Request) {
 
     const adminText = [`Form: ${sourceLabel}`, ...rows.map(([label, value]) => `${label}: ${value}`)].join('\n')
 
-    await transporter.sendMail({
+    await sendMail({
       from: CONTACT_FROM,
       to: CONTACT_TO,
       replyTo: email,
@@ -300,23 +299,27 @@ export async function POST(request: Request) {
     })
 
     if (isStudent) {
-      const confirmation = buildStudentConfirmationEmail({
-        studentId,
-        name,
-        email,
-        phone,
-        course,
-        classDays,
-        classTime,
-      })
+      try {
+        const confirmation = buildStudentConfirmationEmail({
+          studentId,
+          name,
+          email,
+          phone,
+          course,
+          classDays,
+          classTime,
+        })
 
-      await transporter.sendMail({
-        from: CONTACT_FROM,
-        to: email,
-        subject: `[Silicon International] Enrollment Received — ${studentId}`,
-        html: confirmation.html,
-        text: confirmation.text,
-      })
+        await sendMail({
+          from: CONTACT_FROM,
+          to: email,
+          subject: `[Silicon International] Enrollment Received — ${studentId}`,
+          html: confirmation.html,
+          text: confirmation.text,
+        })
+      } catch (confirmError) {
+        console.error('Student confirmation email error:', confirmError)
+      }
     }
 
     try {
@@ -342,9 +345,22 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true, studentId: isStudent ? studentId : undefined })
   } catch (error) {
-    console.error('Contact form error:', error)
+    const err = error as Error & { code?: string; responseCode?: number }
+    console.error('Contact form error:', err.message, err.code || '')
+
+    const isSmtpError =
+      err.code === 'ECONNECTION' ||
+      err.code === 'ETIMEDOUT' ||
+      err.code === 'ESOCKET' ||
+      err.code === 'EAUTH' ||
+      err.responseCode === 535
+
     return NextResponse.json(
-      { error: 'Failed to send message. Please try again or email info@siliconpk.com directly.' },
+      {
+        error: isSmtpError
+          ? 'Email server connection failed. Please call +92 370 917 2334 or email info@siliconpk.com directly.'
+          : 'Failed to send message. Please try again or email info@siliconpk.com directly.',
+      },
       { status: 500 }
     )
   }

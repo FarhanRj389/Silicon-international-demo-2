@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import { 
   FaCartShopping, FaBriefcase, FaGraduationCap, FaRobot, 
-  FaMobileScreenButton, FaArrowRight, FaMicrochip 
+  FaMobileScreenButton, FaArrowRight, FaMicrochip, FaWordpress, FaShopify
 } from 'react-icons/fa6'
 import { LazyImage } from '@/components/lazy-image'
 
@@ -42,6 +42,27 @@ const webServices = [
     description: 'Native-feel cross-platform applications using React Native and modern web technologies, designed specifically for industrial and enterprise use cases.',
     features: ['Cross-Platform', 'React Native', 'PWA Support', 'Industrial Apps'],
     image: '/images/Custom Web.webp',
+  },
+  {
+    icon: FaShopify,
+    title: 'Shopify & E-Commerce Stores',
+    description: 'Full Shopify store setup, custom theme development, product catalog management, payment gateway integration, and headless commerce solutions.',
+    features: ['Shopify Setup', 'Theme Development', 'Payment Integration', 'Headless Commerce'],
+    image: '/images/Premium E-Commerce.webp',
+  },
+  {
+    icon: FaWordpress,
+    title: 'WordPress & CMS Development',
+    description: 'Custom WordPress themes, advanced plugins, WooCommerce stores, and content management systems optimized for speed, SEO, and easy admin control.',
+    features: ['Custom Themes', 'WooCommerce', 'Plugin Development', 'SEO Ready'],
+    image: '/images/Business Portfolio.webp',
+  },
+  {
+    icon: FaMicrochip,
+    title: 'Industrial IoT Dashboards',
+    description: 'Real-time SCADA-style monitoring dashboards, sensor data visualization, equipment tracking, and alert systems for factory and crane operations.',
+    features: ['Live Monitoring', 'Sensor Integration', 'Alert Systems', 'Data Analytics'],
+    image: '/images/AI & Workflow.webp',
   },
 ]
 

@@ -44,6 +44,9 @@ export const serviceTabs: ServiceItem[] = [
       'Design for Manufacturability (DFM) review',
       'Gerber & BOM file delivery',
       'PCB prototyping & small batch production',
+      'Impedance-controlled & HDI board design',
+      'Thermal management & power plane optimization',
+      'Signal integrity analysis & layer stack-up',
     ],
     industries: [
       'Industrial Controllers',
@@ -77,6 +80,9 @@ export const serviceTabs: ServiceItem[] = [
       'Power supply card repair & rebuild',
       'PCB-level component-level fault diagnosis',
       'All major brands: Siemens, ABB, Mitsubishi, Schneider',
+      'Encoder & feedback card calibration',
+      'Industrial UPS & battery backup card repair',
+      'Same-day emergency repair for critical downtime',
     ],
     industries: [
       'Cement Plants',
@@ -110,6 +116,9 @@ export const serviceTabs: ServiceItem[] = [
       'Custom control panel design & fabrication',
       'Motor control center (MCC) integration',
       'On-site commissioning & maintenance',
+      'Wireless remote monitoring & data logging',
+      'Overload protection & limit switch integration',
+      'Annual SLI certification & compliance testing',
     ],
     industries: [
       'Port Cranes',
@@ -129,7 +138,7 @@ export const serviceTabs: ServiceItem[] = [
     title: 'Web Design & Web App / Mobile App Development',
     tagline: 'Digital Solutions for Industrial Businesses',
     description:
-      'We build modern, scalable web and mobile applications tailored for industrial and B2B businesses. From enterprise portals and real-time monitoring dashboards to e-commerce platforms and custom ERPs.',
+      'We build modern, scalable web and mobile applications tailored for industrial and B2B businesses. From enterprise portals and real-time monitoring dashboards to e-commerce platforms, custom ERPs, and AI-powered automation.',
     image:
       'https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg',
     features: [
@@ -141,6 +150,9 @@ export const serviceTabs: ServiceItem[] = [
       'REST API & backend development (Node.js)',
       'Database design & cloud deployment',
       'SEO optimization & performance tuning',
+      'Shopify & WordPress custom development',
+      'AI chatbots & N8N workflow automation',
+      'SaaS platforms & multi-tenant web apps',
     ],
     industries: [
       'Industrial Portals',
@@ -173,6 +185,9 @@ export const serviceTabs: ServiceItem[] = [
       '2 classes per week — choose your days and preferred time slot',
       'Flexible payment via JazzCash, Easypaisa, or Bank Transfer',
       'Hands-on projects, small batches & certificate of completion',
+      'Industrial automation & crane SLI specialized modules',
+      'Internship placement assistance for top-performing students',
+      'Online & on-site lab access with real industrial equipment',
     ],
     industries: [
       'Fresh Graduates',

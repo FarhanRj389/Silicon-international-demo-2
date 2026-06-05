@@ -2,14 +2,21 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { FaMicrochip, FaWrench, FaLaptopCode, FaTowerBroadcast, FaArrowRight } from 'react-icons/fa6'
+import {
+  FaMicrochip,
+  FaWrench,
+  FaLaptopCode,
+  FaTowerBroadcast,
+  FaGraduationCap,
+  FaArrowRight,
+} from 'react-icons/fa6'
 
 const services = [
   {
     icon: FaMicrochip,
     title: 'PCB Design & Manufacturing',
     description: 'Custom PCB design, prototyping, and high-volume manufacturing with precision assembly.',
-    features: ['Multi-layer PCBs', 'SMD Assembly', 'Quality Testing'],
+    features: ['Multi-layer PCBs', 'SMD Assembly', 'HDI & Impedance Control', 'DFM Review'],
     color: 'from-blue-500 to-cyan-500',
     href: '/services/pcb',
     learnLabel: 'PCB Design',
@@ -18,7 +25,7 @@ const services = [
     icon: FaWrench,
     title: 'Industrial Card Repair',
     description: 'Expert repair and refurbishment of industrial control cards, PLCs, and drives.',
-    features: ['PLC Repair', 'Drive Repair', 'Component Level'],
+    features: ['PLC Repair', 'VFD & Servo Drives', 'Emergency Repair', 'All Major Brands'],
     color: 'from-emerald-500 to-teal-500',
     href: '/services/card-repair',
     learnLabel: 'Card Repair',
@@ -26,8 +33,8 @@ const services = [
   {
     icon: FaLaptopCode,
     title: 'Web & App Development',
-    description: 'Modern web applications, e-commerce platforms, and custom software solutions.',
-    features: ['E-Commerce', 'Business Apps', 'AI Solutions'],
+    description: 'Modern web apps, e-commerce, SaaS platforms, AI automation, and mobile solutions.',
+    features: ['React & Next.js', 'Shopify & WordPress', 'AI & N8N Automation', 'Mobile Apps'],
     color: 'from-violet-500 to-purple-500',
     href: '/services/web-dev',
     learnLabel: 'Web & Apps',
@@ -36,10 +43,19 @@ const services = [
     icon: FaTowerBroadcast,
     title: 'Crane SLI Solutions',
     description: 'Safe Load Indicators and crane monitoring systems for industrial safety compliance.',
-    features: ['Load Monitoring', 'Safety Systems', 'Calibration'],
+    features: ['Load Monitoring', 'Anti-Collision', 'Remote Monitoring', 'SLI Certification'],
     color: 'from-orange-500 to-amber-500',
     href: '/services/crane-sli',
     learnLabel: 'Crane SLI',
+  },
+  {
+    icon: FaGraduationCap,
+    title: 'Student Training',
+    description: 'Hands-on professional courses in PCB design, card repair, PLC, web dev, and automation.',
+    features: ['PCB & Card Repair', 'PLC Programming', 'Web Development', 'N8N Automation'],
+    color: 'from-rose-500 to-pink-500',
+    href: '/services/student-training',
+    learnLabel: 'Student Training',
   },
 ]
 
@@ -74,7 +90,7 @@ export function ServicesGrid() {
           </Link>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service, index) => {
             const Icon = service.icon
             return (
@@ -84,7 +100,7 @@ export function ServicesGrid() {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.5, delay: index * 0.08 }}
                 whileHover={{ y: -5 }}
               >
                 <div

@@ -42,7 +42,7 @@ export function Loader({ onComplete }: { onComplete: () => void }) {
   useEffect(() => {
     const stateInterval = setInterval(() => {
       setStateIndex((prev) => (prev + 1) % loadingStates.length);
-    }, 500);
+    }, 350);
     return () => clearInterval(stateInterval);
   }, []);
 
@@ -50,16 +50,16 @@ export function Loader({ onComplete }: { onComplete: () => void }) {
     const progressInterval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) return 100;
-        return Math.min(prev + Math.random() * 22 + 12, 100);
+        return Math.min(prev + Math.random() * 28 + 18, 100);
       });
-    }, 120);
+    }, 80);
     return () => clearInterval(progressInterval);
   }, []);
 
   useEffect(() => {
     if (progress >= 100 && !isExiting) {
-      setTimeout(() => setIsExiting(true), 300);
-      setTimeout(() => onComplete(), 700);
+      setTimeout(() => setIsExiting(true), 150);
+      setTimeout(() => onComplete(), 400);
     }
   }, [progress, isExiting, onComplete]);
 
