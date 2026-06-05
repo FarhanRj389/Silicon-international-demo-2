@@ -5,14 +5,27 @@ import { motion } from 'framer-motion'
 import { FaPaperPlane } from 'react-icons/fa6'
 import { toast } from 'react-toastify'
 import { clearFormCache, initSession, loadFormCache, saveFormCache } from '@/lib/client-storage'
-import { submitContactForm } from '@/lib/submit-contact'
 import {
   clearContactProduct,
   getContactProduct,
   mapProductToServiceValue,
 } from '@/lib/contact-form-utils'
+import { generateStudentSerialId } from '@/lib/generate-student-id'
+import { SITE_PHONE_DISPLAY } from '@/lib/site-contact'
+import {
+  STUDENT_TRAINING_SERVICE,
+  buildStudentTrainingMessage,
+  emptyStudentTrainingFields,
+  isStudentTrainingService,
+  type StudentTrainingFields,
+} from '@/lib/student-training-data'
+import { submitContactForm } from '@/lib/submit-contact'
+import {
+  StudentTrainingFormFields,
+  isStudentTrainingComplete,
+} from '@/components/student-training-form-fields'
 
-const CACHE_KEY = 'silicon_hero_form_v1'
+const CACHE_KEY = 'silicon_hero_form_v2'
 const SESSION_KEY = 'silicon_session_v1'
 
 const serviceOptions = [
@@ -20,6 +33,7 @@ const serviceOptions = [
   'Industrial Card Repair',
   'Crane SLI Solutions',
   'Web Development',
+  STUDENT_TRAINING_SERVICE,
   'General Inquiry',
 ]
 
@@ -42,8 +56,13 @@ const emptyForm: HeroFormData = {
 export function HeroContactForm() {
   const formId = useId()
   const [form, setForm] = useState<HeroFormData>(emptyForm)
+  const [studentFields, setStudentFields] = useState<StudentTrainingFields>(emptyStudentTrainingFields)
+  const [captchaToken, setCaptchaToken] = useState('')
+  const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  const isStudent = isStudentTrainingService(form.service)
 
   useEffect(() => {
     initSession(SESSION_KEY)
@@ -80,6 +99,11 @@ export function HeroContactForm() {
     const product = params.get('product')
     if (product) applyProduct(product)
 
+    const serviceParam = params.get('service')
+    if (serviceParam === 'Student Training' || serviceParam === 'Student+Training') {
+      setForm((prev) => ({ ...prev, service: STUDENT_TRAINING_SERVICE }))
+    }
+
     return () => window.removeEventListener('silicon:contact-product', onProduct)
   }, [])
 
@@ -90,37 +114,83 @@ export function HeroContactForm() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+    const { name, value } = e.target
+    setForm((prev) => {
+      const next = { ...prev, [name]: value }
+      if (name === 'service' && !isStudentTrainingService(value)) {
+        setStudentFields(emptyStudentTrainingFields)
+        setCaptchaToken('')
+        setPaymentScreenshot(null)
+      }
+      return next
+    })
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (isStudent && !isStudentTrainingComplete(studentFields, captchaToken, paymentScreenshot)) {
+      setError('Please complete all Student Training fields including payment verification.')
+      return
+    }
+
     setIsSubmitting(true)
     setError(null)
 
+    const studentId = isStudent ? generateStudentSerialId() : undefined
+    const message =
+      isStudent && !form.message.trim()
+        ? buildStudentTrainingMessage(studentFields)
+        : form.message
+
     try {
-      await submitContactForm({
+      const result = await submitContactForm({
         name: form.name,
         email: form.email,
         phone: form.phone,
         service: form.service || 'General Inquiry',
-        message: form.message,
+        message: message || 'General inquiry',
         source: 'hero-banner',
+        studentId,
+        studentTraining: isStudent
+          ? {
+              trainingCourse: studentFields.trainingCourse,
+              webDevTrack: studentFields.webDevTrack,
+              classDays: studentFields.classDays,
+              classTime: studentFields.classTime,
+              paymentMethod: studentFields.paymentMethod,
+              captchaToken,
+              paymentScreenshot,
+            }
+          : undefined,
       })
       clearFormCache(CACHE_KEY)
       setForm(emptyForm)
-      toast.success('Thank you! Silicon International will respond within 24 hours.')
+      setStudentFields(emptyStudentTrainingFields)
+      setCaptchaToken('')
+      setPaymentScreenshot(null)
+
+      if (result.studentId) {
+        toast.success(
+          `Enrollment submitted! Your Student ID is ${result.studentId}. Check your email for confirmation.`
+        )
+      } else {
+        toast.success('Thank you! Silicon International will respond within 24 hours.')
+      }
     } catch (err) {
-      const message =
+      const msg =
         err instanceof Error
           ? err.message
           : 'Could not send. Email info@siliconpk.com directly.'
-      setError(message)
-      toast.error(message)
+      setError(msg)
+      toast.error(msg)
     } finally {
       setIsSubmitting(false)
     }
   }
+
+  const inputClass =
+    'w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl text-foreground text-sm focus:border-primary outline-none'
 
   return (
     <motion.form
@@ -135,7 +205,7 @@ export function HeroContactForm() {
         Quick Inquiry
       </h3>
       <p className="text-sm text-muted-foreground mb-5">
-        Get a quote saved on this device for 1 week.
+        Get a quote saved on this device for 1 week. Call {SITE_PHONE_DISPLAY}
       </p>
 
       <div className="space-y-4">
@@ -152,7 +222,7 @@ export function HeroContactForm() {
             value={form.name}
             onChange={handleChange}
             placeholder="Full Name *"
-            className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl text-foreground text-sm focus:border-primary outline-none"
+            className={inputClass}
           />
         </div>
         <div>
@@ -168,7 +238,7 @@ export function HeroContactForm() {
             value={form.email}
             onChange={handleChange}
             placeholder="Email *"
-            className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl text-foreground text-sm focus:border-primary outline-none"
+            className={inputClass}
           />
         </div>
         <div>
@@ -182,8 +252,8 @@ export function HeroContactForm() {
             autoComplete="tel"
             value={form.phone}
             onChange={handleChange}
-            placeholder="Phone"
-            className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl text-foreground text-sm focus:border-primary outline-none"
+            placeholder={`Phone (${SITE_PHONE_DISPLAY})`}
+            className={inputClass}
           />
         </div>
         <div>
@@ -197,7 +267,7 @@ export function HeroContactForm() {
             value={form.service}
             onChange={handleChange}
             aria-label="Service Required"
-            className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl text-foreground text-sm focus:border-primary outline-none"
+            className={inputClass}
           >
             <option value="">Service Required *</option>
             {serviceOptions.map((s) => (
@@ -207,6 +277,21 @@ export function HeroContactForm() {
             ))}
           </select>
         </div>
+
+        {isStudent && (
+          <StudentTrainingFormFields
+            fields={studentFields}
+            onChange={setStudentFields}
+            captchaToken={captchaToken}
+            onCaptchaChange={(token) => setCaptchaToken(token || '')}
+            paymentScreenshot={paymentScreenshot}
+            onPaymentScreenshotChange={setPaymentScreenshot}
+            selectClassName={inputClass}
+            labelClassName="block text-sm font-medium text-foreground mb-2"
+            idPrefix="hero-st"
+          />
+        )}
+
         <div>
           <label htmlFor={`${formId}-message`} className="sr-only">
             Project details
@@ -214,12 +299,12 @@ export function HeroContactForm() {
           <textarea
             id={`${formId}-message`}
             name="message"
-            required
+            required={!isStudent}
             rows={3}
             value={form.message}
             onChange={handleChange}
-            placeholder="Your project details *"
-            className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl text-foreground text-sm focus:border-primary outline-none resize-none"
+            placeholder={isStudent ? 'Additional notes (optional)' : 'Your project details *'}
+            className={`${inputClass} resize-none`}
           />
         </div>
       </div>

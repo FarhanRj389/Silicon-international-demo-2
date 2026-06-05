@@ -18,6 +18,7 @@ import { LeadForm } from '@/components/lead-form'
 import { Footer } from '@/components/footer'
 import { HashUrlFix } from '@/components/hash-url-fix'
 import { SectionSkeleton } from '@/components/section-skeleton'
+import { SITE_WHATSAPP_URL } from '@/lib/site-contact'
 
 const WebDevSection = dynamic(
   () => import('@/components/web-dev-section').then((m) => ({ default: m.WebDevSection })),
@@ -92,7 +93,7 @@ export function HomePageClient() {
 
       {!loading && (
         <motion.a
-          href="https://wa.me/923442279244"
+          href={SITE_WHATSAPP_URL}
           target="_blank"
           rel="noopener noreferrer"
           className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 w-12 h-12 sm:w-14 sm:h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow safe-bottom"

@@ -9,6 +9,9 @@ __v0_jsx-dev-runtime.ts
 # Environment variables
 .env*.local
 
+# Form submission data
+data/*.xlsx
+
 # Common ignores
 node_modules
 .next/

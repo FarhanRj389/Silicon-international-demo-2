@@ -1,4 +1,5 @@
 import { SITE_NAME, SITE_URL } from '@/lib/seo'
+import { SITE_PHONE_DISPLAY } from '@/lib/site-contact'
 
 type JsonLdProps = {
   data: Record<string, unknown>
@@ -37,7 +38,7 @@ export function OrganizationJsonLd() {
         },
         contactPoint: {
           '@type': 'ContactPoint',
-          telephone: '+92-344-2279244',
+          telephone: SITE_PHONE_DISPLAY,
           contactType: 'customer service',
           email: 'info@siliconpk.com',
         },

@@ -1,0 +1,4 @@
+export const SITE_PHONE_DISPLAY = '+92 370 917 2334'
+export const SITE_PHONE_TEL = '+923709172334'
+export const SITE_WHATSAPP_NUMBER = '923709172334'
+export const SITE_WHATSAPP_URL = `https://wa.me/${SITE_WHATSAPP_NUMBER}`

@@ -2,6 +2,11 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import {
+  SITE_PHONE_DISPLAY,
+  SITE_PHONE_TEL,
+  SITE_WHATSAPP_URL,
+} from '@/lib/site-contact'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import {
@@ -143,9 +148,9 @@ export function Footer() {
                 </span>
               </li>
               <li>
-                <a href="tel:+923709172334" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors">
+                <a href={`tel:${SITE_PHONE_TEL}`} className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors">
                   <FaPhone className="w-5 h-5 text-primary flex-shrink-0" />
-                  +92 370 917 2334
+                  {SITE_PHONE_DISPLAY}
                 </a>
               </li>
               <li>
@@ -158,7 +163,7 @@ export function Footer() {
 
             {/* WhatsApp CTA */}
             <motion.a
-              href="https://wa.me/923709172334"
+              href={SITE_WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-6 flex items-center gap-2 px-4 py-3 bg-[#25D366] text-white rounded-lg font-medium hover:bg-[#25D366]/90 transition-colors w-fit"

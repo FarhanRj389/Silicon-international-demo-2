@@ -14,6 +14,7 @@ import { Header } from '@/components/header'
 import { ServicesHero } from '@/components/services-hero'
 import { ServiceTabsNav } from '@/components/service-tabs-nav'
 import { getServiceById, serviceTabs } from '@/components/services-content'
+import { STUDENT_TRAINING_PROGRAMS } from '@/lib/student-training-data'
 import { WebDevFeatureHub } from '@/components/web-dev-feature-hub'
 
 type ServiceDetailViewProps = {
@@ -163,6 +164,59 @@ export function ServiceDetailView({ serviceId }: ServiceDetailViewProps) {
         )}
 
         {active.id === 'web-dev' && <WebDevFeatureHub />}
+
+        {active.id === 'student-training' && (
+          <section className="py-16 bg-secondary/20">
+            <div className="container mx-auto px-4 md:px-6">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-center mb-10"
+              >
+                <h3 className="text-2xl font-extrabold text-foreground mb-2">Training Programs</h3>
+                <p className="text-muted-foreground">
+                  Choose your course, pick 2 days per week, select a time slot, and enroll online.
+                </p>
+              </motion.div>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+                {STUDENT_TRAINING_PROGRAMS.map((program, i) => (
+                  <motion.div
+                    key={program.title}
+                    initial={{ opacity: 0, y: 14 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: i * 0.05 }}
+                    className="p-6 bg-card rounded-xl border border-border"
+                  >
+                    <h4 className="text-lg font-bold text-foreground mb-2">{program.title}</h4>
+                    <p className="text-sm text-muted-foreground mb-3">{program.description}</p>
+                    {'tracks' in program && program.tracks && (
+                      <div className="flex flex-wrap gap-1.5">
+                        {program.tracks.map((track) => (
+                          <span
+                            key={track}
+                            className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full"
+                          >
+                            {track}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+              <div className="text-center mt-10">
+                <Link
+                  href="/contact?service=Student+Training"
+                  className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-8 py-3.5 rounded-xl text-sm transition-colors"
+                >
+                  Enroll Now <FaArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+          </section>
+        )}
 
         <section className="py-16 bg-background">
           <div className="container mx-auto px-4 md:px-6">

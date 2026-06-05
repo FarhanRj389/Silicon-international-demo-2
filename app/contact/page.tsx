@@ -2,20 +2,37 @@
 
 import { useState, useEffect } from 'react'
 import { toast } from 'react-toastify'
-import { clearFormCache, initSession, loadFormCache, saveFormCache } from '@/lib/client-storage'
-import { submitContactForm } from '@/lib/submit-contact'
-
-const CONTACT_CACHE_KEY = 'silicon_contact_form_v1'
-const SESSION_KEY = 'silicon_session_v1'
 import { motion } from 'framer-motion'
 import { PageWrapper } from '@/components/page-wrapper'
 import { PageBanner } from '@/components/page-banner'
 import { TrustedPartners } from '@/components/trusted-partners'
-import { 
+import {
+  StudentTrainingFormFields,
+  isStudentTrainingComplete,
+} from '@/components/student-training-form-fields'
+import { clearFormCache, initSession, loadFormCache, saveFormCache } from '@/lib/client-storage'
+import { generateStudentSerialId } from '@/lib/generate-student-id'
+import {
+  SITE_PHONE_DISPLAY,
+  SITE_PHONE_TEL,
+  SITE_WHATSAPP_URL,
+} from '@/lib/site-contact'
+import {
+  STUDENT_TRAINING_SERVICE,
+  buildStudentTrainingMessage,
+  emptyStudentTrainingFields,
+  isStudentTrainingService,
+  type StudentTrainingFields,
+} from '@/lib/student-training-data'
+import { submitContactForm } from '@/lib/submit-contact'
+import {
   FaLocationDot, FaPhone, FaEnvelope, FaWhatsapp, FaClock,
-  FaLinkedinIn, FaFacebookF, FaTwitter, FaInstagram,
+  FaFacebookF, FaInstagram,
   FaPaperPlane, FaUpload
 } from 'react-icons/fa6'
+
+const CONTACT_CACHE_KEY = 'silicon_contact_form_v2'
+const SESSION_KEY = 'silicon_session_v1'
 
 const contactInfo = [
   {
@@ -26,8 +43,8 @@ const contactInfo = [
   {
     icon: FaPhone,
     title: 'Call Us',
-    details: ['+92 370 917 2334'],
-    link: 'tel:+923709172334'
+    details: [SITE_PHONE_DISPLAY],
+    link: `tel:${SITE_PHONE_TEL}`
   },
   {
     icon: FaEnvelope,
@@ -43,7 +60,7 @@ const contactInfo = [
 ]
 
 const socialLinks = [
-  { icon: FaWhatsapp, href: 'https://wa.me/923709172334', label: 'WhatsApp', color: 'hover:bg-[#25D366]' },
+  { icon: FaWhatsapp, href: SITE_WHATSAPP_URL, label: 'WhatsApp', color: 'hover:bg-[#25D366]' },
   // { icon: FaLinkedinIn, href: 'https://linkedin.com', label: 'LinkedIn', color: 'hover:bg-[#0077B5]' },
   { icon: FaFacebookF, href: 'https://facebook.com', label: 'Facebook', color: 'hover:bg-[#1877F2]' },
   // { icon: FaTwitter, href: 'https://twitter.com', label: 'Twitter', color: 'hover:bg-[#1DA1F2]' },
@@ -55,8 +72,9 @@ const serviceOptions = [
   'Industrial Card Repair',
   'Web Development',
   'Crane SLI Solutions',
+  STUDENT_TRAINING_SERVICE,
   'Component Sourcing',
-  'Other'
+  'Other',
 ]
 
 export default function ContactPage() {
@@ -70,8 +88,13 @@ export default function ContactPage() {
     message: '',
   })
   const [file, setFile] = useState<File | null>(null)
+  const [studentFields, setStudentFields] = useState<StudentTrainingFields>(emptyStudentTrainingFields)
+  const [captchaToken, setCaptchaToken] = useState('')
+  const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+
+  const isStudent = isStudentTrainingService(formData.service)
 
   const emptyForm = {
     name: '',
@@ -87,6 +110,12 @@ export default function ContactPage() {
     initSession(SESSION_KEY)
     const cached = loadFormCache<typeof formData>(CONTACT_CACHE_KEY)
     if (cached) setFormData(cached)
+
+    const params = new URLSearchParams(window.location.search)
+    const serviceParam = params.get('service')
+    if (serviceParam === 'Student Training' || serviceParam === 'Student+Training') {
+      setFormData((prev) => ({ ...prev, service: STUDENT_TRAINING_SERVICE }))
+    }
   }, [])
 
   useEffect(() => {
@@ -94,7 +123,13 @@ export default function ContactPage() {
   }, [formData])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+    const { name, value } = e.target
+    setFormData({ ...formData, [name]: value })
+    if (name === 'service' && !isStudentTrainingService(value)) {
+      setStudentFields(emptyStudentTrainingFields)
+      setCaptchaToken('')
+      setPaymentScreenshot(null)
+    }
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,25 +140,58 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (isStudent && !isStudentTrainingComplete(studentFields, captchaToken, paymentScreenshot)) {
+      setSubmitError('Please complete all Student Training fields including payment verification.')
+      return
+    }
+
     setIsSubmitting(true)
     setSubmitError(null)
 
+    const studentId = isStudent ? generateStudentSerialId() : undefined
+    const message =
+      isStudent && !formData.message.trim()
+        ? buildStudentTrainingMessage(studentFields)
+        : formData.message
+
     try {
-      await submitContactForm({
+      const result = await submitContactForm({
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
         company: formData.company,
         service: formData.service,
-        // budget: formData.budget,
-        message: formData.message,
+        message: message || 'Contact inquiry',
         file,
         source: 'contact-page',
+        studentId,
+        studentTraining: isStudent
+          ? {
+              trainingCourse: studentFields.trainingCourse,
+              webDevTrack: studentFields.webDevTrack,
+              classDays: studentFields.classDays,
+              classTime: studentFields.classTime,
+              paymentMethod: studentFields.paymentMethod,
+              captchaToken,
+              paymentScreenshot,
+            }
+          : undefined,
       })
       clearFormCache(CONTACT_CACHE_KEY)
       setFormData(emptyForm)
       setFile(null)
-      toast.success('Thank you! Silicon International will respond within 24 hours.')
+      setStudentFields(emptyStudentTrainingFields)
+      setCaptchaToken('')
+      setPaymentScreenshot(null)
+
+      if (result.studentId) {
+        toast.success(
+          `Enrollment submitted! Your Student ID is ${result.studentId}. Check your email for confirmation.`
+        )
+      } else {
+        toast.success('Thank you! Silicon International will respond within 24 hours.')
+      }
     } catch (err) {
       const message =
         err instanceof Error
@@ -208,7 +276,7 @@ export default function ContactPage() {
                 <div className="grid sm:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="phone" className="block text-sm font-medium text-foreground mb-2">Phone Number</label>
-                    <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} className="w-full px-4 py-3 bg-secondary/30 border border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:border-primary outline-none transition-colors" placeholder="+92 300 0000000" />
+                    <input type="tel" id="phone" name="phone" value={formData.phone} onChange={handleChange} className="w-full px-4 py-3 bg-secondary/30 border border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:border-primary outline-none transition-colors" placeholder={SITE_PHONE_DISPLAY} />
                   </div>
                   <div>
                     <label htmlFor="company" className="block text-sm font-medium text-foreground mb-2">Company Name</label>
@@ -239,9 +307,25 @@ export default function ContactPage() {
                   </div> */}
                 </div>
 
+                {isStudent && (
+                  <StudentTrainingFormFields
+                    fields={studentFields}
+                    onChange={setStudentFields}
+                    captchaToken={captchaToken}
+                    onCaptchaChange={(token) => setCaptchaToken(token || '')}
+                    paymentScreenshot={paymentScreenshot}
+                    onPaymentScreenshotChange={setPaymentScreenshot}
+                    selectClassName="w-full px-4 py-3 bg-secondary/30 border border-border rounded-xl text-foreground focus:border-primary outline-none transition-colors"
+                    labelClassName="block text-sm font-medium text-foreground mb-2"
+                    idPrefix="contact-st"
+                  />
+                )}
+
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">Project Details *</label>
-                  <textarea id="message" name="message" required rows={5} value={formData.message} onChange={handleChange} className="w-full px-4 py-3 bg-secondary/30 border border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:border-primary outline-none transition-colors resize-none" placeholder="Describe your project requirements..." />
+                  <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
+                    {isStudent ? 'Additional Notes' : 'Project Details *'}
+                  </label>
+                  <textarea id="message" name="message" required={!isStudent} rows={5} value={formData.message} onChange={handleChange} className="w-full px-4 py-3 bg-secondary/30 border border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:border-primary outline-none transition-colors resize-none" placeholder={isStudent ? 'Any additional notes (optional)' : 'Describe your project requirements...'} />
                 </div>
 
                 <div>
@@ -285,7 +369,7 @@ export default function ContactPage() {
               <div className="p-6 bg-card border border-border rounded-2xl">
                 <h3 className="text-xl font-bold text-foreground mb-4">Quick Contact</h3>
                 <p className="text-muted-foreground mb-6">Need immediate assistance? Reach out via WhatsApp.</p>
-                <a href="https://wa.me/923709172334" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-[#25D366] text-white rounded-xl font-semibold hover:bg-[#25D366]/90 transition-colors">
+                <a href={SITE_WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full px-6 py-4 bg-[#25D366] text-white rounded-xl font-semibold hover:bg-[#25D366]/90 transition-colors">
                   <FaWhatsapp className="w-6 h-6" />
                   Chat on WhatsApp
                 </a>

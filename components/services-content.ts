@@ -160,18 +160,19 @@ export const serviceTabs: ServiceItem[] = [
     title: 'Professional Skills Training for Students',
     tagline: 'Learn. Build. Launch Your Career.',
     description:
-      'Silicon International offers hands-on professional training programs for students and fresh graduates. Our industry-expert instructors guide you through practical, real-world projects in PCB Design, Card Repairing, Web & App Development, and more. Enroll today and start your journey toward a successful tech career.',
+      'Silicon International offers hands-on professional training for students and fresh graduates. Choose from PCB Design, Card Repairing, PLC Programming, Web Development (Shopify, WordPress, React, Next.js, Mobile Apps), and N8N Automations. Select 2 class days per week, your preferred time slot, and enroll online with secure payment verification.',
     image:
       'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg',
     features: [
-      'PCB Design — Learn Altium, KiCad & schematic capture',
-      'Card Repairing — Diagnose & fix industrial electronics',
-      'Web & App Development — Full-stack modern tech stack',
-      'Hands-on practical projects with real hardware',
-      'Industry-certified instructors with 10+ years experience',
-      'Small batch classes for personalized attention',
-      'Flexible scheduling — choose your preferred days & time',
-      'Certificate of completion issued by Silicon International',
+      'PCB Design — Altium Designer, KiCad, schematic capture & multi-layer layouts',
+      'Card Repairing — Industrial electronics diagnosis & component-level repair',
+      'PLC Programming — Siemens, Allen-Bradley, Mitsubishi logic & HMI integration',
+      'Web Development — Shopify Store, Shopify Theme Dev, WordPress, Advance WordPress',
+      'Web Development — React, Next.js & Mobile App development tracks',
+      'N8N Automations — Workflow automation, API integrations & webhooks',
+      '2 classes per week — choose your days and preferred time slot',
+      'Flexible payment via JazzCash, Easypaisa, or Bank Transfer',
+      'Hands-on projects, small batches & certificate of completion',
     ],
     industries: [
       'Fresh Graduates',
