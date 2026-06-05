@@ -139,13 +139,13 @@ export function Footer() {
               <li className="flex items-start gap-3">
                 <FaLocationDot className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                 <span className="text-muted-foreground">
-                  Office #123, Tech Park, Lahore, Pakistan
+                Office # 3 First Floor, Sarmad Center, Saddar, Karachi-74400, Pakistan.
                 </span>
               </li>
               <li>
-                <a href="tel:+923442279244" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors">
+                <a href="tel:+923709172334" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors">
                   <FaPhone className="w-5 h-5 text-primary flex-shrink-0" />
-                  +92 344 227 9244
+                  +92 370 917 2334
                 </a>
               </li>
               <li>
@@ -158,7 +158,7 @@ export function Footer() {
 
             {/* WhatsApp CTA */}
             <motion.a
-              href="https://wa.me/923442279244"
+              href="https://wa.me/923709172334"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-6 flex items-center gap-2 px-4 py-3 bg-[#25D366] text-white rounded-lg font-medium hover:bg-[#25D366]/90 transition-colors w-fit"
@@ -199,7 +199,7 @@ export function Footer() {
       <div className="border-t border-border">
         <div className="container mx-auto px-4 md:px-6 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-            <p>© 2024 Silicon International. All rights reserved.</p>
+            <p>© 2026 Silicon International. All rights reserved.</p>
             <div className="flex items-center gap-6">
               <Link href="#" className="hover:text-foreground transition-colors">Privacy Policy</Link>
               <Link href="#" className="hover:text-foreground transition-colors">Terms of Service</Link>
