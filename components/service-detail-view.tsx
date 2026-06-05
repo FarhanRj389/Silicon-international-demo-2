@@ -5,6 +5,7 @@ import Link from 'next/link'
 import {
   FaArrowRight,
   FaArrowUpRightFromSquare,
+  FaCartShopping,
   FaCircleCheck,
   FaChevronRight,
 } from 'react-icons/fa6'
@@ -58,25 +59,39 @@ export function ServiceDetailView({ serviceId }: ServiceDetailViewProps) {
                   </div>
                 </div>
 
-                {active.ctaType === 'store' ? (
-                  <a
-                    href={active.ctaHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 py-3.5 rounded-xl text-sm transition-colors"
-                  >
-                    <FaArrowUpRightFromSquare className="w-4 h-4" />
-                    {active.ctaText}
-                  </a>
-                ) : (
-                  <Link
-                    href={active.ctaHref}
-                    className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-6 py-3.5 rounded-xl text-sm transition-colors"
-                  >
-                    {active.ctaText}
-                    <FaArrowRight className="w-4 h-4" />
-                  </Link>
-                )}
+                <div className="flex flex-wrap items-center gap-3">
+                  {active.ctaType === 'store' ? (
+                    <a
+                      href={active.ctaHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 py-3.5 rounded-xl text-sm transition-colors"
+                    >
+                      <FaArrowUpRightFromSquare className="w-4 h-4" />
+                      {active.ctaText}
+                    </a>
+                  ) : (
+                    <Link
+                      href={active.ctaHref}
+                      className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-6 py-3.5 rounded-xl text-sm transition-colors"
+                    >
+                      {active.ctaText}
+                      <FaArrowRight className="w-4 h-4" />
+                    </Link>
+                  )}
+                  {active.buyHref && (
+                    <a
+                      href={active.buyHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 py-3.5 rounded-xl text-sm transition-colors"
+                    >
+                      <FaCartShopping className="w-4 h-4" />
+                      {active.buyText ?? 'Buy Now'}
+                      <FaArrowUpRightFromSquare className="w-3.5 h-3.5" />
+                    </a>
+                  )}
+                </div>
               </div>
 
               <div className="relative">

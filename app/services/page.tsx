@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { FaArrowRight } from 'react-icons/fa6'
+import { FaArrowRight, FaArrowUpRightFromSquare, FaCartShopping } from 'react-icons/fa6'
 import { Footer } from '@/components/footer'
 import { Header } from '@/components/header'
 import { ServicesHero } from '@/components/services-hero'
@@ -40,13 +40,27 @@ export default function ServicesPage() {
                     <h3 className="text-2xl font-bold text-foreground mb-2">{service.title}</h3>
                     <p className="text-primary font-semibold italic mb-3">{service.tagline}</p>
                     <p className="text-muted-foreground mb-6 leading-relaxed line-clamp-3">{service.description}</p>
-                    <Link
-                      href={`/services/${service.id}`}
-                      className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-semibold px-5 py-3 rounded-xl hover:bg-primary/90 transition-colors"
-                    >
-                      Learn More
-                      <FaArrowRight className="w-4 h-4" />
-                    </Link>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <Link
+                        href={`/services/${service.id}`}
+                        className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-semibold px-5 py-3 rounded-xl hover:bg-primary/90 transition-colors"
+                      >
+                        Learn More
+                        <FaArrowRight className="w-4 h-4" />
+                      </Link>
+                      {service.buyHref && (
+                        <a
+                          href={service.buyHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-semibold px-5 py-3 rounded-xl transition-colors"
+                        >
+                          <FaCartShopping className="w-4 h-4" />
+                          {service.buyText ?? 'Buy Now'}
+                          <FaArrowUpRightFromSquare className="w-3.5 h-3.5" />
+                        </a>
+                      )}
+                    </div>
                   </motion.div>
                 )
               })}

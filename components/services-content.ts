@@ -19,6 +19,8 @@ export type ServiceItem = {
   ctaType: 'store' | 'consult'
   ctaText: string
   ctaHref: string
+  buyHref?: string
+  buyText?: string
 }
 
 export const serviceTabs: ServiceItem[] = [
@@ -31,7 +33,7 @@ export const serviceTabs: ServiceItem[] = [
     description:
       'Our PCB design and manufacturing service covers the full lifecycle from initial schematic capture and component selection to Gerber file production and prototype fabrication. We work with single-layer, double-layer, and complex multi-layer boards designed for industrial-grade reliability.',
     image:
-      'https://images.pexels.com/photos/163100/circuit-circuit-board-resistor-computer-163100.jpeg',
+      '/images/Our services PCB design.webp',
     features: [
       'Single, double & multi-layer PCB design',
       'Altium Designer & KiCad expertise',
@@ -49,9 +51,11 @@ export const serviceTabs: ServiceItem[] = [
       'Automation Panels',
       'Telecom Equipment',
     ],
-    ctaType: 'store',
-    ctaText: 'Need Components for this? Shop on Silicon Parts Hub',
-    ctaHref: 'https://siliconpartshub.com',
+    ctaType: 'consult',
+    ctaText: 'Book a PCB Design Consultation',
+    ctaHref: '/contact',
+    buyHref: 'https://siliconpartshub.com',
+    buyText: 'Buy PCB Components',
   },
   {
     id: 'card-repair',
@@ -80,9 +84,11 @@ export const serviceTabs: ServiceItem[] = [
       'Petrochemicals',
       'Port Equipment',
     ],
-    ctaType: 'store',
-    ctaText: 'Need Components for this? Shop on Silicon Parts Hub',
-    ctaHref: 'https://siliconpartshub.com',
+    ctaType: 'consult',
+    ctaText: 'Request Card Repair Service',
+    ctaHref: '/contact',
+    buyHref: 'https://siliconpartshub.com',
+    buyText: 'Buy Repair Parts',
   },
   {
     id: 'crane-sli',
@@ -112,7 +118,7 @@ export const serviceTabs: ServiceItem[] = [
       'Tower Cranes',
     ],
     ctaType: 'consult',
-    ctaText: 'Request a Crane SLI Consultation',
+    ctaText: 'Get a Crane SLI Quote',
     ctaHref: '/contact',
   },
   {
@@ -143,7 +149,7 @@ export const serviceTabs: ServiceItem[] = [
       'IoT Dashboards',
     ],
     ctaType: 'consult',
-    ctaText: 'Discuss Your Web/App Project',
+    ctaText: 'Discuss Your Project',
     ctaHref: '/contact',
   },
 ]
