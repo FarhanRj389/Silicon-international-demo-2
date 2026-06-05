@@ -59,7 +59,7 @@ export default function AboutPage() {
     <PageWrapper>
       <PageBanner
         title="About Silicon International"
-        subtitle="Founded in 1975 — electronic engineering, R&D, reverse engineering, crane SLI, fire safety systems, and industrial automation across Pakistan."
+        subtitle="Founded in 1975 electronic engineering, R&D, reverse engineering, crane SLI, fire safety systems, and industrial automation across Pakistan."
         breadcrumbs={[{ name: 'About Us', href: '/about' }]}
       />
 
@@ -74,7 +74,7 @@ export default function AboutPage() {
             >
               <span className="text-primary text-sm font-semibold uppercase tracking-widest">Our Heritage</span>
               <h2 id="company-story" className="text-3xl md:text-4xl font-bold text-foreground mt-4 mb-6">
-                Silicon International — Established 1975
+                Silicon International Established 1975
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 <strong className="text-foreground">Silicon International</strong> was founded in{' '}
@@ -86,7 +86,7 @@ export default function AboutPage() {
               </p>
               <p className="text-muted-foreground leading-relaxed mb-4">
                 At Silicon International, our motto is to <strong className="text-foreground">fulfill the demands of our clients</strong>{' '}
-                regarding their <strong className="text-foreground">electronics cards and systems-related issues</strong> —
+                regarding their <strong className="text-foreground">electronics cards and systems-related issues</strong>
                 with precision, reliability, and non-stop dedication.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-8">
@@ -109,9 +109,9 @@ export default function AboutPage() {
               className="rounded-2xl overflow-hidden border border-border aspect-4/3 sticky top-28"
             >
               <img
-                src="/silicon_int_2.jpeg"
+                src="/images/abouts.webp"
                 alt="Silicon International — electronic engineering and industrial automation since 1975"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-center"
               />
             </motion.div>
           </div>
@@ -161,7 +161,7 @@ export default function AboutPage() {
           >
             Our services include <strong className="text-foreground">Research & Development of complex electronic systems</strong>,
             their <strong className="text-foreground">designing</strong>, and <strong className="text-foreground">repairing work</strong>.
-            We support industrial clients with full lifecycle engineering — from concept and prototyping to field deployment
+            We support industrial clients with full lifecycle engineering from concept and prototyping to field deployment
             and maintenance.
           </motion.p>
           <motion.div
@@ -193,7 +193,7 @@ export default function AboutPage() {
             Our Products
           </h2>
           <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-12">
-            Industrial-grade electronic products engineered and supported by Silicon International — trusted across
+            Industrial-grade electronic products engineered and supported by Silicon International trusted across
             cranes, aviation, textiles, and safety-critical environments.
           </p>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -226,7 +226,7 @@ export default function AboutPage() {
             Our List of Projects
           </h2>
           <p className="text-muted-foreground text-center max-w-2xl mx-auto mb-12">
-            Selected engineering projects delivered by Silicon International — spanning safety systems, aviation
+            Selected engineering projects delivered by Silicon International spanning safety systems, aviation
             weighing, crane automation, textiles, and DSP processing.
           </p>
           <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
