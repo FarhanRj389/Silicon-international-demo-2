@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server'
 import { appendSubmissionToExcel } from '@/lib/excel-submissions'
 import { generateStudentSerialId } from '@/lib/generate-student-id'
 import { CONTACT_FROM, CONTACT_TO, sendMail, isMailConfigured } from '@/lib/mail'
-import { verifyRecaptcha } from '@/lib/recaptcha'
 import {
   buildStudentCourseLabel,
   buildStudentTrainingMessage,
@@ -148,7 +147,6 @@ export async function POST(request: Request) {
     const classDays = String(formData.get('classDays') || '').trim()
     const classTime = String(formData.get('classTime') || '').trim()
     const paymentMethod = String(formData.get('paymentMethod') || '').trim()
-    const captchaToken = String(formData.get('captchaToken') || '').trim()
     const paymentScreenshot = formData.get('paymentScreenshot')
     let studentId = String(formData.get('studentId') || '').trim()
 
@@ -186,16 +184,6 @@ export async function POST(request: Request) {
           { error: 'Please select exactly 2 class days per week.' },
           { status: 400 }
         )
-      }
-
-      if (process.env.RECAPTCHA_SECRET_KEY) {
-        if (!captchaToken) {
-          return NextResponse.json({ error: 'Please complete the reCAPTCHA verification.' }, { status: 400 })
-        }
-        const validCaptcha = await verifyRecaptcha(captchaToken)
-        if (!validCaptcha) {
-          return NextResponse.json({ error: 'reCAPTCHA verification failed. Please try again.' }, { status: 400 })
-        }
       }
 
       if (!(paymentScreenshot instanceof File) || paymentScreenshot.size === 0) {

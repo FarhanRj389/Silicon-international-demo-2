@@ -73,7 +73,6 @@ export function LeadForm() {
   const [service, setService] = useState('')
   const [projectDetails, setProjectDetails] = useState('')
   const [studentFields, setStudentFields] = useState<StudentTrainingFields>(emptyStudentTrainingFields)
-  const [captchaToken, setCaptchaToken] = useState('')
   const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -128,7 +127,6 @@ export function LeadForm() {
     setService(value)
     if (value !== 'student-training') {
       setStudentFields(emptyStudentTrainingFields)
-      setCaptchaToken('')
       setPaymentScreenshot(null)
     }
   }
@@ -136,7 +134,7 @@ export function LeadForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (isStudent && !isStudentTrainingComplete(studentFields, captchaToken, paymentScreenshot)) {
+    if (isStudent && !isStudentTrainingComplete(studentFields, paymentScreenshot)) {
       setError('Please complete all Student Training fields including payment verification.')
       return
     }
@@ -169,7 +167,6 @@ export function LeadForm() {
               classDays: studentFields.classDays,
               classTime: studentFields.classTime,
               paymentMethod: studentFields.paymentMethod,
-              captchaToken,
               paymentScreenshot,
             }
           : undefined,
@@ -185,7 +182,6 @@ export function LeadForm() {
       setFile(null)
       setFileName(null)
       setStudentFields(emptyStudentTrainingFields)
-      setCaptchaToken('')
       setPaymentScreenshot(null)
       setSubmittedStudentId(result.studentId ?? null)
       setIsSubmitted(true)
@@ -354,8 +350,6 @@ export function LeadForm() {
                       <StudentTrainingFormFields
                         fields={studentFields}
                         onChange={setStudentFields}
-                        captchaToken={captchaToken}
-                        onCaptchaChange={(token) => setCaptchaToken(token || '')}
                         paymentScreenshot={paymentScreenshot}
                         onPaymentScreenshotChange={setPaymentScreenshot}
                         selectClassName="w-full px-4 py-2.5 rounded-lg bg-secondary/50 border border-border text-foreground focus:border-primary focus:outline-none"

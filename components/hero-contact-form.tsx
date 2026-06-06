@@ -57,7 +57,6 @@ export function HeroContactForm() {
   const formId = useId()
   const [form, setForm] = useState<HeroFormData>(emptyForm)
   const [studentFields, setStudentFields] = useState<StudentTrainingFields>(emptyStudentTrainingFields)
-  const [captchaToken, setCaptchaToken] = useState('')
   const [paymentScreenshot, setPaymentScreenshot] = useState<File | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -119,7 +118,6 @@ export function HeroContactForm() {
       const next = { ...prev, [name]: value }
       if (name === 'service' && !isStudentTrainingService(value)) {
         setStudentFields(emptyStudentTrainingFields)
-        setCaptchaToken('')
         setPaymentScreenshot(null)
       }
       return next
@@ -129,7 +127,7 @@ export function HeroContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (isStudent && !isStudentTrainingComplete(studentFields, captchaToken, paymentScreenshot)) {
+    if (isStudent && !isStudentTrainingComplete(studentFields, paymentScreenshot)) {
       setError('Please complete all Student Training fields including payment verification.')
       return
     }
@@ -159,7 +157,6 @@ export function HeroContactForm() {
               classDays: studentFields.classDays,
               classTime: studentFields.classTime,
               paymentMethod: studentFields.paymentMethod,
-              captchaToken,
               paymentScreenshot,
             }
           : undefined,
@@ -167,7 +164,6 @@ export function HeroContactForm() {
       clearFormCache(CACHE_KEY)
       setForm(emptyForm)
       setStudentFields(emptyStudentTrainingFields)
-      setCaptchaToken('')
       setPaymentScreenshot(null)
 
       if (result.studentId) {
@@ -282,8 +278,6 @@ export function HeroContactForm() {
           <StudentTrainingFormFields
             fields={studentFields}
             onChange={setStudentFields}
-            captchaToken={captchaToken}
-            onCaptchaChange={(token) => setCaptchaToken(token || '')}
             paymentScreenshot={paymentScreenshot}
             onPaymentScreenshotChange={setPaymentScreenshot}
             selectClassName={inputClass}

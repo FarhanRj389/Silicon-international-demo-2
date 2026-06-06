@@ -6,7 +6,6 @@ export type StudentTrainingPayload = {
   classDays: string[]
   classTime: string
   paymentMethod: string
-  captchaToken?: string
   paymentScreenshot?: File | null
 }
 
@@ -53,7 +52,6 @@ export async function submitContactForm(payload: ContactFormPayload): Promise<Co
     body.append('classDays', st.classDays.join(', '))
     body.append('classTime', st.classTime)
     body.append('paymentMethod', st.paymentMethod)
-    if (st.captchaToken) body.append('captchaToken', st.captchaToken)
     if (st.paymentScreenshot) body.append('paymentScreenshot', st.paymentScreenshot)
   }
 

@@ -1,7 +1,6 @@
 'use client'
 
 import { useId } from 'react'
-import dynamic from 'next/dynamic'
 import {
   CLASS_DAYS,
   CLASS_TIMES,
@@ -12,15 +11,11 @@ import {
   type StudentTrainingFields,
 } from '@/lib/student-training-data'
 
-const ReCAPTCHA = dynamic(() => import('react-google-recaptcha'), { ssr: false })
-
 type FieldClassName = string
 
 type StudentTrainingFormFieldsProps = {
   fields: StudentTrainingFields
   onChange: (fields: StudentTrainingFields) => void
-  captchaToken: string
-  onCaptchaChange: (token: string | null) => void
   paymentScreenshot: File | null
   onPaymentScreenshotChange: (file: File | null) => void
   selectClassName?: FieldClassName
@@ -42,8 +37,6 @@ function getPaymentDetails(methodId: string): string {
 export function StudentTrainingFormFields({
   fields,
   onChange,
-  captchaToken,
-  onCaptchaChange,
   paymentScreenshot,
   onPaymentScreenshotChange,
   selectClassName = defaultSelect,
@@ -73,9 +66,7 @@ export function StudentTrainingFormFields({
   const showTime = showDays && fields.classDays.length === 2
   const showPayment = showTime && Boolean(fields.classTime)
   const showPaymentDetails = showPayment && Boolean(fields.paymentMethod)
-  const showCaptcha = showPaymentDetails
-  const showScreenshot = showCaptcha && Boolean(captchaToken)
-  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+  const showScreenshot = showPaymentDetails
 
   return (
     <div className={sectionClassName}>
@@ -222,22 +213,8 @@ export function StudentTrainingFormFields({
             {getPaymentDetails(fields.paymentMethod)}
           </p>
           <p className="text-xs text-muted-foreground mt-2">
-            After sending payment, complete verification below and upload your screenshot.
+            After sending payment, upload your payment screenshot below.
           </p>
-        </div>
-      )}
-
-      {showCaptcha && (
-        <div>
-          <p className={labelClassName}>Payment Confirmation (reCAPTCHA) *</p>
-          {siteKey ? (
-            <ReCAPTCHA sitekey={siteKey} onChange={onCaptchaChange} />
-          ) : (
-            <p className="text-xs text-amber-600 bg-amber-500/10 border border-amber-500/30 rounded-lg px-3 py-2">
-              reCAPTCHA is not configured. Set NEXT_PUBLIC_RECAPTCHA_SITE_KEY in environment
-              variables.
-            </p>
-          )}
         </div>
       )}
 
@@ -268,7 +245,6 @@ export function StudentTrainingFormFields({
 
 export function isStudentTrainingComplete(
   fields: StudentTrainingFields,
-  captchaToken: string,
   paymentScreenshot: File | null
 ): boolean {
   if (!fields.trainingCourse) return false
@@ -276,7 +252,6 @@ export function isStudentTrainingComplete(
   if (fields.classDays.length !== 2) return false
   if (!fields.classTime) return false
   if (!fields.paymentMethod) return false
-  if (!captchaToken && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) return false
   if (!paymentScreenshot) return false
   return true
 }

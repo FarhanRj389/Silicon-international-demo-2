@@ -8,3 +8,11 @@
 [build.environment]
   NODE_VERSION = "20"
   NPM_FLAGS = "--legacy-peer-deps"
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["nodemailer"]
+
+# Next.js API routes need enough time for SMTP on Netlify
+[functions."___netlify-server-handler"]
+  timeout = 26
