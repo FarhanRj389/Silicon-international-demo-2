@@ -60,6 +60,11 @@ function getExcelPath(): string {
 }
 
 export async function appendSubmissionToExcel(row: SubmissionRow): Promise<void> {
+  // Netlify/serverless has read-only filesystem — skip to avoid delays
+  if (process.env.NETLIFY === 'true' || process.env.AWS_LAMBDA_FUNCTION_NAME) {
+    return
+  }
+
   const filePath = getExcelPath()
   const dir = path.dirname(filePath)
 

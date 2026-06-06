@@ -29,6 +29,28 @@ export type ContactFormResponse = {
   studentId?: string
 }
 
+async function parseApiResponse(res: Response): Promise<ContactFormResponse> {
+  const contentType = res.headers.get('content-type') ?? ''
+
+  if (contentType.includes('application/json')) {
+    try {
+      return (await res.json()) as ContactFormResponse
+    } catch {
+      throw new Error('Invalid server response. Please email info@siliconpk.com directly.')
+    }
+  }
+
+  if (res.status === 502 || res.status === 504) {
+    throw new Error(
+      'Server is taking too long to respond. Please try again in a moment or email info@siliconpk.com directly.'
+    )
+  }
+
+  throw new Error(
+    `Server error (${res.status}). Please email info@siliconpk.com or call +92 370 917 2334.`
+  )
+}
+
 export async function submitContactForm(payload: ContactFormPayload): Promise<ContactFormResponse> {
   const body = new FormData()
   body.append('name', payload.name)
@@ -61,8 +83,14 @@ export async function submitContactForm(payload: ContactFormPayload): Promise<Co
     if (payload.file) body.append('file', payload.file)
   }
 
-  const res = await fetch('/api/contact', { method: 'POST', body })
-  const data = (await res.json()) as ContactFormResponse
+  let res: Response
+  try {
+    res = await fetch('/api/contact', { method: 'POST', body })
+  } catch {
+    throw new Error('Network error. Check your connection or email info@siliconpk.com directly.')
+  }
+
+  const data = await parseApiResponse(res)
 
   if (!res.ok) {
     throw new Error(data.error || 'Failed to send message.')

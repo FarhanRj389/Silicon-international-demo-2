@@ -10,6 +10,7 @@ import {
 } from '@/lib/student-training-data'
 
 export const runtime = 'nodejs'
+export const maxDuration = 26
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 
@@ -118,6 +119,13 @@ function buildStudentConfirmationEmail(data: {
   ].join('\n')
 
   return { html, text }
+}
+
+function isNetlifyMailIssue(err: Error & { code?: string }) {
+  return (
+    process.env.NETLIFY === 'true' &&
+    (err.code === 'ETIMEDOUT' || err.code === 'ECONNECTION' || err.code === 'ESOCKET')
+  )
 }
 
 export async function POST(request: Request) {
@@ -341,13 +349,20 @@ export async function POST(request: Request) {
       err.code === 'ETIMEDOUT' ||
       err.code === 'ESOCKET' ||
       err.code === 'EAUTH' ||
+      err.code === 'ERESEND' ||
       err.responseCode === 535
+
+    const needsResend =
+      isNetlifyMailIssue(err) &&
+      !process.env.RESEND_API_KEY
 
     return NextResponse.json(
       {
-        error: isSmtpError
-          ? 'Email server connection failed. Please call +92 370 917 2334 or email info@siliconpk.com directly.'
-          : 'Failed to send message. Please try again or email info@siliconpk.com directly.',
+        error: needsResend
+          ? 'Email could not be sent from the server. Please email info@siliconpk.com directly or call +92 370 917 2334.'
+          : isSmtpError
+            ? 'Email server connection failed. Please call +92 370 917 2334 or email info@siliconpk.com directly.'
+            : 'Failed to send message. Please try again or email info@siliconpk.com directly.',
       },
       { status: 500 }
     )
