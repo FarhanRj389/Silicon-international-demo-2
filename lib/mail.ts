@@ -31,6 +31,10 @@ export type SendMailOptions = {
 }
 
 export function isMailConfigured() {
+  if (isNetlify) {
+    return Boolean(resendApiKey)
+  }
+
   return Boolean(resendApiKey || (smtpHost && smtpUser && smtpPass))
 }
 

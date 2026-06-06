@@ -84,7 +84,7 @@ export default function ContactPage() {
     phone: '',
     company: '',
     service: '',
-    // budget: '',
+    budget: '',
     message: '',
   })
   const [file, setFile] = useState<File | null>(null)
@@ -101,7 +101,7 @@ export default function ContactPage() {
     phone: '',
     company: '',
     service: '',
-    // budget: '',
+    budget: '',
     message: '',
   }
 
