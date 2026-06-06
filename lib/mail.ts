@@ -10,7 +10,9 @@ const smtpHost = stripEnvQuotes(process.env.SMTP_HOST)
 const smtpPort = Number(process.env.SMTP_PORT || 587)
 const smtpUser = stripEnvQuotes(process.env.SMTP_USER)
 const smtpPass = stripEnvQuotes(process.env.SMTP_PASS)
-const smtpSecure = process.env.SMTP_SECURE === 'true' || smtpPort === 465
+// Port 465 uses SSL/TLS on connect; port 587 uses STARTTLS (requireTLS)
+const smtpSecure = smtpPort === 465 || (process.env.SMTP_SECURE === 'true' && smtpPort !== 587)
+const smtpRequireTLS = smtpPort === 587
 
 const isNetlify = process.env.NETLIFY === 'true'
 const resendApiKey = stripEnvQuotes(process.env.RESEND_API_KEY)
@@ -48,7 +50,7 @@ function createTransport(host: string, port: number, secure: boolean) {
     port,
     secure,
     auth: { user: smtpUser, pass: smtpPass },
-    requireTLS: !secure && port === 587,
+    requireTLS: smtpRequireTLS,
     tls: {
       rejectUnauthorized: process.env.SMTP_TLS_REJECT_UNAUTHORIZED === 'true',
       minVersion: 'TLSv1.2',
